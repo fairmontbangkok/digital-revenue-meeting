@@ -2,1168 +2,569 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fairmont Bangkok Sukhumvit — Digital Marketing Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#f5f5f5;--surface:#fff;--s2:#f0f0f0;--s3:#e8e8e8;--text:#0a0a0a;--t2:#4d4d4d;--t3:#7f7f7f;--border:#e0e0e0;--border2:#ccc;--up:#1D9E75;--down:#D85A30;--neu:#378ADD;--pass-bg:#e2f5ec;--pass-tx:#065f46;--warn-bg:#fef3dc;--warn-tx:#92400e;--fail-bg:#fee8e8;--fail-tx:#b91c1c}
-body{font-family:'Montserrat',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px}
-.wrap{max-width:1300px;margin:0 auto;padding:24px 20px}
-.topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:20px}
-.hotel-name{font-size:16px;font-weight:700}
-.hotel-sub{font-size:11px;color:var(--t3);margin-top:2px}
-.badge{font-size:11px;padding:3px 10px;border-radius:20px;border:0.5px solid var(--border2);background:var(--s2);color:var(--t2);font-weight:600}
-.badge-warn{background:#fef3dc;color:#92400e}
-.topbar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.btn{font-size:12px;padding:7px 16px;border-radius:6px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text);cursor:pointer;font-weight:700;font-family:inherit;transition:background .15s}
-.btn:hover{background:var(--s2)}
-.btn-dark{background:#0a0a0a;color:#fff;border-color:#0a0a0a}
-.btn-dark:hover{background:#333}
-.tabs{display:flex;border-bottom:0.5px solid var(--border);margin-bottom:20px;overflow-x:auto}
-.tab{font-size:12px;font-weight:700;padding:9px 18px;cursor:pointer;color:var(--t3);border-bottom:2px solid transparent;margin-bottom:-0.5px;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit}
-.tab.on{color:var(--text);border-bottom-color:var(--text)}
-.panel{display:none}.panel.on{display:block}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-bottom:18px}
-.kpi{background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:14px 16px}
-.kpi-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:8px}
-.kpi-value{font-size:24px;font-weight:700;line-height:1}
-.kpi-sub{font-size:11px;color:var(--t3);margin-top:5px}
-.kpi-delta{font-size:11px;font-weight:600;margin-top:3px}
-.up{color:var(--up)}.down{color:var(--down)}.neu{color:var(--neu)}
-.card{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:14px}
-.card-title{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:14px}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-.tbl{width:100%;border-collapse:collapse;font-size:12px}
-.tbl th{text-align:left;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);padding:6px 10px;border-bottom:0.5px solid var(--border)}
-.tbl td{padding:9px 10px;border-bottom:0.5px solid var(--border);vertical-align:middle}
-.tbl tr:last-child td{border-bottom:none}
-.tbl tbody tr:hover td{background:var(--s2)}
-.pill{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px}
-.pill-brand{background:#0a0a0a;color:#fff}.pill-gap{background:#e8e8e8;color:#333}.pill-local{background:#4d4d4d;color:#fff}
-.pos-wrap{display:flex;align-items:center;gap:6px}
-.pos-bar{flex:1;height:4px;background:#e8e8e8;border-radius:2px;overflow:hidden}
-.pos-fill{height:100%;background:#0a0a0a;border-radius:2px}
-.audit-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.audit-item{border:0.5px solid var(--border);border-radius:8px;padding:10px 12px}
-.audit-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
-.audit-name{font-size:11px;font-weight:700}.audit-score{font-size:13px;font-weight:700}
-.s-hi{color:#1D9E75}.s-md{color:#BA7517}.s-lo{color:#D85A30}
-.score-bar{height:3px;background:#e8e8e8;border-radius:2px;overflow:hidden;margin-bottom:5px}
-.score-fill{height:100%;background:#0a0a0a;border-radius:2px}
-.audit-note{font-size:10px;color:var(--t3);line-height:1.4}
-.tech-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--border)}
-.tech-row:last-child{border-bottom:none}
-.tech-ico{width:22px;height:22px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
-.t-pass{background:var(--pass-bg);color:var(--pass-tx)}.t-warn{background:var(--warn-bg);color:var(--warn-tx)}.t-fail{background:var(--fail-bg);color:var(--fail-tx)}
-.tech-name{font-size:12px;font-weight:600;flex:1}.tech-note{font-size:11px;color:var(--t3)}
-.comp-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.comp-name{font-size:11px;font-weight:600;width:145px;flex-shrink:0}
-.comp-bar-bg{flex:1;height:7px;background:#e8e8e8;border-radius:4px;overflow:hidden}
-.comp-bar-fill{height:100%;background:#0a0a0a;border-radius:4px}
-.comp-pos{font-size:11px;color:var(--t3);width:42px;text-align:right;flex-shrink:0}
-.insight{background:#0a0a0a;border-radius:8px;padding:14px 16px;margin-top:14px}
-.insight-title{font-size:9px;font-weight:700;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:8px}
-.insight-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:5px;font-size:11px;color:#ccc;line-height:1.5}
-.insight-dot{width:4px;height:4px;border-radius:50%;background:#555;flex-shrink:0;margin-top:6px}
-.action-row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:0.5px solid var(--border);border-radius:8px;cursor:pointer;margin-bottom:8px;transition:background .1s}
-.action-row:hover{background:var(--s2)}.action-row.done{opacity:.45}.action-row.done .a-title{text-decoration:line-through}
-.chk{width:18px;height:18px;border-radius:3px;border:0.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px}
-.chk.on{background:#0a0a0a;border-color:#0a0a0a}.chk svg{display:none}.chk.on svg{display:block}
-.a-title{font-size:12px;font-weight:700;margin-bottom:4px}
-.a-meta{display:flex;gap:5px;flex-wrap:wrap}
-.tag{font-size:10px;padding:2px 7px;border-radius:10px;background:var(--s2);color:var(--t2);font-weight:600}
-.p1{background:#0a0a0a;color:#fff}.p2{background:#4d4d4d;color:#fff}
-.prog-bar-bg{flex:1;height:5px;background:#e8e8e8;border-radius:3px;overflow:hidden}
-.prog-bar-fill{height:100%;background:#0a0a0a;border-radius:3px;transition:width .4s}
-.llm-top-row{display:grid;grid-template-columns:220px 1fr;gap:14px;margin-bottom:14px}
-.gauge-card{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;align-items:center}
-.metrics-card{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:18px 20px}
-.llm-bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-.dist-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border)}
-.dist-row:last-child{border-bottom:none}
-.dist-name{font-size:12px;font-weight:600;width:120px;flex-shrink:0;display:flex;align-items:center;gap:6px}
-.dist-bar-bg{flex:1;height:6px;background:var(--s2);border-radius:3px;overflow:hidden}
-.dist-bar-fill{height:100%;border-radius:3px}
-.dist-pct{font-size:11px;color:var(--t3);width:36px;text-align:right;flex-shrink:0}
-.dist-count{font-size:11px;font-weight:600;width:32px;text-align:right;flex-shrink:0}
-.vis-bar-bg{width:80px;height:5px;background:var(--s2);border-radius:3px;overflow:hidden;display:inline-block}
-.vis-bar-fill{height:100%;border-radius:3px;background:#0a0a0a}
-.status-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px}
-.sb-high{background:#e2f5ec;color:#065f46}.sb-med{background:#fef3dc;color:#92400e}.sb-low{background:#fee8e8;color:#b91c1c}.sb-new{background:#e6f1fb;color:#0c447c}
-.mini-trend{display:flex;align-items:flex-end;gap:2px;height:24px}
-.mini-bar{width:5px;border-radius:1px;background:var(--border2);opacity:.5}
-.mini-bar.hi{background:#0a0a0a;opacity:1}
-.topics-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.t-tab{font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;border:0.5px solid var(--border2);background:var(--s2);color:var(--t2);cursor:pointer;font-family:inherit}
-.t-tab.on{background:#0a0a0a;color:#fff;border-color:#0a0a0a}
-.tip-row{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:0.5px solid var(--border)}
-.tip-row:last-child{border-bottom:none}
-.tip-num{width:22px;height:22px;border-radius:50%;background:#0a0a0a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
-.suggest-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-.suggest-card{border:0.5px solid var(--border);border-radius:10px;padding:14px 16px}
-.suggest-type{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:10px}
-.suggest-item{font-size:12px;padding:8px 10px;background:var(--s2);border-radius:6px;margin-bottom:6px;line-height:1.5;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;transition:background .1s}
-.suggest-item:hover{background:#e8e8e8}.suggest-item:last-child{margin-bottom:0}
-.copy-lbl{font-size:10px;color:var(--t3);flex-shrink:0;margin-top:1px}
-.prompt-card{border:0.5px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
-.prompt-tag{font-size:10px;padding:2px 7px;border-radius:10px;background:var(--s2);color:var(--t2);font-weight:600}
-.tag-chatgpt{background:#e6f7f3;color:#065f46}.tag-perplexity{background:#f0ebff;color:#4c1d95}.tag-google{background:#e8f0fe;color:#1a56db}
-.prompt-copy-btn{font-size:11px;padding:4px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--s2);color:var(--t2);cursor:pointer;font-family:inherit;font-weight:600}
-.prompt-copy-btn:hover{background:#0a0a0a;color:#fff}
-.priority-high{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;background:#fee8e8;color:#b91c1c}
-.priority-med{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;background:#fef3dc;color:#92400e}
-.priority-watch{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;background:#e6f1fb;color:#0c447c}
-.footer{text-align:center;font-size:10px;color:var(--t3);margin-top:24px;padding:16px 0;border-top:0.5px solid var(--border);letter-spacing:1px}
-@media(max-width:768px){.two-col,.suggest-grid,.audit-grid,.llm-bottom-row,.llm-top-row{grid-template-columns:1fr}}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fairmont Bangkok Sukhumvit — Weekly Digital Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-.preset-btn{display:block;width:100%;text-align:left;font-size:12px;padding:7px 14px;border:none;background:none;color:var(--t2);cursor:pointer;font-family:inherit;transition:background .1s}
-.preset-btn:hover{background:var(--s2);color:var(--text)}
-.preset-active{font-weight:700;color:var(--text) !important;background:var(--s2)}
-.cal-day{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:11px;border-radius:50%;border:none;background:none;cursor:pointer;font-family:inherit;color:var(--text);transition:background .1s}
-.cal-day:hover{background:var(--s2)}
-.cal-day.selected{background:#34a853;color:#fff;font-weight:700}
-.cal-day.in-range{background:#e6f7f0;color:var(--text)}
-.cal-day.today{font-weight:700;border:1.5px solid #34a853}
-.cal-day.other-month{color:var(--t3)}
-.cal-day.disabled{color:var(--border2);cursor:not-allowed}
+  <script>
+    (function () {
+      const KEY = 'fbk_last_refresh';
+      const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+      const last = parseInt(localStorage.getItem(KEY) || '0', 10);
+      const now = Date.now();
+      if (now - last > WEEK_MS) {
+        localStorage.setItem(KEY, now);
+        if (last !== 0) window.location.reload(true);
+      }
+    })();
+  </script>
 
-.dpre-btn{display:block;width:100%;text-align:left;font-size:12px;padding:7px 14px;border:none;background:none;color:var(--t2);cursor:pointer;font-family:inherit}
-.dpre-btn:hover{background:var(--s2);color:var(--text)}
-.dpre-active{font-weight:700;color:var(--text)!important;background:var(--s2)!important}
-.dp-day{width:100%;aspect-ratio:1;border:none;background:none;cursor:pointer;font-size:11px;border-radius:50%;font-family:inherit;color:var(--text);transition:background .1s}
-.dp-day:hover:not(:disabled){background:var(--s2)}
-.dp-day.dp-sel{background:#34a853!important;color:#fff!important;font-weight:700}
-.dp-day.dp-range{background:#e6f7f0}
-.dp-day.dp-today{font-weight:700;box-shadow:inset 0 0 0 1.5px #34a853}
-.dp-day:disabled{color:var(--border2);cursor:not-allowed}
-</style>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:    #B19143;
+      --gold-lt: #f8f3e8;
+      --black:   #000000;
+      --white:   #ffffff;
+      --mid:     #777777;
+      --light:   #f7f7f5;
+      --border:  #e8e8e8;
+      --red:     #b83232;
+      --red-lt:  #fdf3f3;
+      --green:   #2a7a4b;
+      --green-lt:#f0f7f3;
+      --amber:   #a06b00;
+      --amber-lt:#fdf8ee;
+      --font:    'Montserrat', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: #f4f4f2;
+      color: var(--black);
+      font-size: 14px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .report {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--white);
+    }
+
+    /* ── COVER ── */
+    .cover {
+      background: var(--black);
+      padding: 4rem 3.5rem 3rem;
+    }
+    .cover-eyebrow {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+    }
+    .cover-title {
+      font-size: 36px;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+    .cover-sub {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .cover-rule { width: 48px; height: 2px; background: var(--gold); margin-bottom: 1.5rem; }
+    .cover-desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: #999;
+      line-height: 1.9;
+      max-width: 520px;
+      margin-bottom: 3rem;
+    }
+    .cover-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      border-top: 1px solid #222;
+      padding-top: 2rem;
+    }
+    .cover-stat-val {
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1;
+    }
+    .cover-stat-val.gold { color: var(--gold); }
+    .cover-stat-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #444;
+      margin-top: 6px;
+    }
+    .cover-stat-explain {
+      font-size: 10px;
+      color: #555;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      padding: 3rem 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .section:last-of-type { border-bottom: none; }
+
+    .section-eyebrow {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 0.4rem;
+    }
+    .section-explain {
+      font-size: 12px;
+      color: var(--mid);
+      margin-bottom: 2rem;
+      line-height: 1.75;
+      max-width: 660px;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── STATUS CARDS ── */
+    .status-grid {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 2rem;
+    }
+    .status-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--border);
+    }
+    .status-card.good  { border-left-color: var(--green); background: var(--green-lt); }
+    .status-card.warn  { border-left-color: var(--gold);  background: var(--gold-lt);  }
+    .status-card.bad   { border-left-color: var(--red);   background: var(--red-lt);   }
+
+    .status-icon { font-size: 20px; min-width: 28px; margin-top: 2px; }
+    .status-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .status-card.good .status-label { color: var(--green); }
+    .status-card.warn .status-label { color: var(--amber); }
+    .status-card.bad  .status-label { color: var(--red);   }
+
+    .status-title { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 4px; }
+    .status-body  { font-size: 12px; color: #444; line-height: 1.65; }
+    /* ── KPI ROW ── */
+    .kpi-row {
+      display: grid;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 1.75rem;
+    }
+    .kpi-cell { background: var(--white); padding: 1.1rem 1.25rem; }
+    .kpi-val  { font-size: 26px; font-weight: 400; line-height: 1; color: var(--black); }
+    .kpi-val.gold  { color: var(--gold);  }
+    .kpi-val.bad   { color: var(--red);   }
+    .kpi-val.good  { color: var(--green); }
+    .kpi-name    { font-size: 11px; font-weight: 600; color: var(--black); margin-top: 5px; }
+    .kpi-explain { font-size: 10px; color: var(--mid); margin-top: 3px; line-height: 1.5; }
+
+    /* ── TWO COL ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+
+    /* ── COMPETITOR BAR ── */
+    .comp-row { margin-bottom: 14px; }
+    .comp-label { display: flex; justify-content: space-between; font-size: 12px; color: #333; margin-bottom: 5px; }
+    .comp-label.us { font-weight: 600; color: var(--gold); }
+    .comp-track { height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
+    .comp-fill  { height: 100%; border-radius: 3px; background: #ddd; }
+    .comp-fill.us { background: var(--gold); }
+
+    /* ── DIVIDER ── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.75rem 0; }
+
+    /* ── SUB LABEL ── */
+    .sub-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 0.75rem;
+    }
+
+    /* ── TABLE ── */
+    .tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .tbl th {
+      text-align: left;
+      padding: 8px 10px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--mid);
+      border-bottom: 2px solid var(--black);
+    }
+    .tbl td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: #333; vertical-align: middle; }
+    .tbl tr:last-child td { border-bottom: none; }
+
+    /* ── TAGS ── */
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 2px;
+    }
+    .tag-green { background: var(--green-lt); color: var(--green); border: 1px solid #9fcfb8; }
+    .tag-gold  { background: var(--gold-lt);  color: var(--amber); border: 1px solid #d4b96a; }
+    .tag-red   { background: var(--red-lt);   color: var(--red);   border: 1px solid #e8a9a9; }
+    .tag-gray  { background: #f0f0f0; color: #555; border: 1px solid #ddd; }
+
+    /* ── ACTION STEPS ── */
+    .action-step { display: flex; gap: 1.25rem; padding: 1rem 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+    .action-step:last-child { border-bottom: none; }
+    .action-num { font-size: 20px; font-weight: 300; color: var(--gold); min-width: 30px; line-height: 1.2; }
+    .action-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+    .action-why   { font-size: 11px; color: #555; line-height: 1.65; margin-bottom: 6px; }
+    .action-meta  { display: flex; gap: 8px; flex-wrap: wrap; }
+    .action-chip  { font-size: 10px; font-weight: 500; color: var(--mid); background: var(--light); padding: 2px 8px; border-radius: 2px; }
+    .action-chip.p1 { background: var(--red-lt);   color: var(--red);   font-weight: 700; }
+    .action-chip.p2 { background: var(--gold-lt);  color: var(--amber); font-weight: 700; }
+
+    /* ── CALLOUT ── */
+    .callout { padding: 1rem 1.25rem; border-left: 3px solid; margin-top: 1rem; font-size: 12px; line-height: 1.75; }
+    .callout.bad   { background: var(--red-lt);   border-color: var(--red);   color: #7a1f1f; }
+    .callout.good  { background: var(--green-lt); border-color: var(--green); color: #1a4f2f; }
+    .callout.info  { background: var(--gold-lt);  border-color: var(--gold);  color: #6b4f10; }
+
+    /* ── STAT HERO ── */
+    .stat-hero { font-size: 64px; font-weight: 300; color: var(--gold); line-height: 1; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .cover, .section { padding: 2rem 1.25rem; }
+      .two-col { grid-template-columns: 1fr; gap: 1.5rem; }
+      .kpi-row { grid-template-columns: 1fr 1fr !important; }
+      .cover-stats { grid-template-columns: 1fr 1fr; gap: 1.5rem; padding-top: 1.5rem; }
+      .cover-title { font-size: 26px; }
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
+<div class="report">
 
-<div class="topbar">
-  <div>
-    <div class="hotel-name">Fairmont Bangkok Sukhumvit</div>
-    <div class="hotel-sub">SEO + Media Dashboard &nbsp;·&nbsp; Week of <span id="wk-date">31 Mar 2026</span> &nbsp;·&nbsp; Updated <span id="upd-time">31 Mar 2026 09:00</span></div>
+  <!-- ══════════════ COVER ══════════════ -->
+  <div class="cover">
+    <div class="cover-eyebrow">Fairmont Bangkok Sukhumvit</div>
+    <div class="cover-title">Weekly Digital<br>Performance Report</div>
+    <div class="cover-sub">Week of 29 March 2026</div>
+    <div class="cover-rule"></div>
+    <div class="cover-desc">
+      This report shows how easy it is for guests to find Fairmont Bangkok online —
+      through Google search, AI assistants, and paid advertising. Updated every week.
+      No marketing background needed to read it.
+    </div>
+    <div class="cover-stats">
+      <div>
+        <div class="cover-stat-val gold">#1</div>
+        <div class="cover-stat-label">Google Rank</div>
+        <div class="cover-stat-explain">We appear first when someone searches "Fairmont Bangkok Sukhumvit"</div>
+      </div>
+      <div>
+        <div class="cover-stat-val">8/100</div>
+        <div class="cover-stat-label">AI Visibility</div>
+        <div class="cover-stat-explain">AI assistants like ChatGPT rarely mention us yet — room to grow</div>
+      </div>
+      <div>
+        <div class="cover-stat-val">฿12,071</div>
+        <div class="cover-stat-label">Ad Spend · 30 Days</div>
+        <div class="cover-stat-explain">Spent on Google ads targeting event planners in SG &amp; AU</div>
+      </div>
+      <div>
+        <div class="cover-stat-val">฿0</div>
+        <div class="cover-stat-label">Instagram / Facebook Ads</div>
+        <div class="cover-stat-explain">No social media ads running yet — an opportunity we haven't used</div>
+      </div>
+    </div>
   </div>
-  <div class="topbar-right">
-    <span class="badge badge-warn">GA4 restricted</span>
-    <span class="badge">Search Console + Manual SERP</span>
-    <button class="btn" onclick="setTime()">Refresh</button>
-    <button class="btn btn-dark" onclick="window.print()">Export PDF</button>
-  </div>
-</div>
 
-<div class="tabs">
-  <button class="tab on"  onclick="showTab('seo',this)">SEO Overview</button>
-  <button class="tab"     onclick="showTab('llm',this)">LLM Visibility</button>
-  <button class="tab"     onclick="showTab('content',this)">Content suggestions</button>
-  <button class="tab"     onclick="showTab('actions',this)">Action plan</button>
-  <button class="tab"     onclick="showTab('prompts',this)">AI prompt library</button>
-  <button class="tab"     onclick="showTab('ga4',this)" style="color:#e37400">GA4 Analytics</button>
-  <button class="tab"     onclick="showTab('google',this)" style="color:#34a853">Google Ads</button>
-  <button class="tab"     onclick="showTab('meta',this)" style="color:#1877f2">Meta Ads</button>
-</div>
+  <!-- ══════════════ SECTION 1 — GOOGLE SEARCH ══════════════ -->
+  <div class="section">
+    <div class="section-eyebrow">Section 01</div>
+    <div class="section-title">Can guests find us on Google?</div>
+    <div class="section-explain">
+      When someone opens Google and types "luxury hotel Bangkok" or "rooftop bar Sukhumvit",
+      do we show up? This section shows where we rank today, what's working, and what's holding us back.
+    </div>
 
-<div class="panel on" id="tab-seo">
-  <div class="kpi-grid">
-    <div class="kpi"><div class="kpi-label">Organic visibility</div><div class="kpi-value">NEW</div><div class="kpi-sub">Week 2</div><div class="kpi-delta neu">Establishing</div></div>
-    <div class="kpi"><div class="kpi-label">Title tag score</div><div class="kpi-value">7<span style="font-size:14px;font-weight:400">/10</span></div><div class="kpi-sub">Rooms/Dining/Offers updated</div><div class="kpi-delta up">+1 WoW ↑</div></div>
-    <div class="kpi"><div class="kpi-label">Page speed mobile</div><div class="kpi-value">~52</div><div class="kpi-sub">PageSpeed Insights</div><div class="kpi-delta down">Below 65</div></div>
-    <div class="kpi"><div class="kpi-label">Schema markup</div><div class="kpi-value">3<span style="font-size:14px;font-weight:400">/10</span></div><div class="kpi-sub">No Hotel schema</div><div class="kpi-delta down">P1 fix needed</div></div>
-    <div class="kpi"><div class="kpi-label">Google Business</div><div class="kpi-value" style="font-size:17px;padding-top:4px">Claimed</div><div class="kpi-sub">Optimised this week</div><div class="kpi-delta up">✓ Done</div></div>
-    <div class="kpi"><div class="kpi-label">LLM visibility</div><div class="kpi-value" style="font-size:17px;padding-top:4px">8/100</div><div class="kpi-sub">New property</div><div class="kpi-delta neu">See LLM tab</div></div>
-    <div class="kpi"><div class="kpi-label">Tasks complete</div><div class="kpi-value" id="kpi-pct">0%</div><div class="kpi-sub" id="kpi-count">0 of 8</div><div class="kpi-delta neu">This week</div></div>
-  </div>
-  <div class="card">
-    <div class="card-title">Keyword rankings tracker</div>
-    <div style="overflow-x:auto">
+    <div class="sub-label">Health Check — 5 Key Areas</div>
+    <div class="status-grid" style="grid-template-columns:1fr 1fr;">
+      <div class="status-card good">
+        <div class="status-icon">✓</div>
+        <div>
+          <div class="status-label">Working Well</div>
+          <div class="status-title">Brand name searches</div>
+          <div class="status-body">When someone already knows us and types "Fairmont Bangkok", we appear at #1 or #2 on Google. Our brand presence is solid.</div>
+        </div>
+      </div>
+      <div class="status-card good">
+        <div class="status-icon">✓</div>
+        <div>
+          <div class="status-label">Working Well</div>
+          <div class="status-title">Listed on booking platforms</div>
+          <div class="status-body">We are live on 4 major booking platforms (Expedia, TripAdvisor and others). Guests can find and book us there.</div>
+        </div>
+      </div>
+      <div class="status-card warn">
+        <div class="status-icon">!</div>
+        <div>
+          <div class="status-label">Needs Attention</div>
+          <div class="status-title">Generic searches rank poorly</div>
+          <div class="status-body">When someone searches "luxury hotel Bangkok Sukhumvit" without knowing our name, we appear on page 2 (position 15–20). Most people never scroll that far.</div>
+        </div>
+      </div>
+      <div class="status-card warn">
+        <div class="status-icon">!</div>
+        <div>
+          <div class="status-label">Needs Attention</div>
+          <div class="status-title">Website loads slowly on phones</div>
+          <div class="status-body">Our mobile speed scores ~52 out of 100. Google penalises slow sites by ranking them lower. Most guests search on their phones.</div>
+        </div>
+      </div>
+      <div class="status-card bad">
+        <div class="status-icon">✗</div>
+        <div>
+          <div class="status-label">Not Done Yet</div>
+          <div class="status-title">Google Maps profile not claimed</div>
+          <div class="status-body">We have not claimed our official Google Maps listing. This means we can't respond to reviews, update our hours, or add photos through Google.</div>
+        </div>
+      </div>
+      <div class="status-card bad">
+        <div class="status-icon">✗</div>
+        <div>
+          <div class="status-label">Not Done Yet</div>
+          <div class="status-title">Missing "hotel label" in our website code</div>
+          <div class="status-body">Google looks for a special behind-the-scenes tag to show star ratings and amenities in search results. Ours is missing. All 3 top competitors have it.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-label" style="margin-top:0.5rem;">What People Search — and Where We Appear</div>
     <table class="tbl">
-      <thead><tr><th>Keyword</th><th>Vol/mo</th><th style="min-width:150px">Position</th><th>WoW</th><th>Status</th><th>Priority action</th></tr></thead>
+      <thead>
+        <tr>
+          <th>What someone types into Google</th>
+          <th>Searches / month</th>
+          <th>Our position</th>
+          <th>Status</th>
+          <th>What to do</th>
+        </tr>
+      </thead>
       <tbody>
-        <tr><td style="font-weight:700">Fairmont Bangkok Sukhumvit</td><td>5,400</td><td><div class="pos-wrap"><span style="font-weight:700;min-width:32px">#1</span><div class="pos-bar"><div class="pos-fill" style="width:100%"></div></div></div></td><td>—</td><td><span class="pill pill-brand">Brand</span></td><td style="color:var(--t3);font-size:11px">Maintain · sitelinks schema</td></tr>
-        <tr><td style="font-weight:700">Fairmont Bangkok</td><td>8,100</td><td><div class="pos-wrap"><span style="font-weight:700;min-width:32px">#2</span><div class="pos-bar"><div class="pos-fill" style="width:95%"></div></div></div></td><td>—</td><td><span class="pill pill-brand">Brand</span></td><td style="color:var(--t3);font-size:11px">Schema · brand consistency</td></tr>
-        <tr><td style="font-weight:700">luxury hotel Bangkok Sukhumvit</td><td>1,900</td><td><div class="pos-wrap"><span style="font-weight:700;min-width:32px">15</span><div class="pos-bar"><div class="pos-fill" style="width:57%"></div></div></div></td><td><span style="color:var(--t3);font-size:11px">→ Hold</span></td><td><span class="pill pill-gap">Gap</span></td><td style="color:var(--t3);font-size:11px">Optimise H1 + keyword density</td></tr>
-        <tr><td style="font-weight:700">best hotel Sukhumvit Bangkok</td><td>1,300</td><td><div class="pos-wrap"><span style="font-weight:700;min-width:32px">20</span><div class="pos-bar"><div class="pos-fill" style="width:40%"></div></div></div></td><td><span style="color:var(--t3);font-size:11px">→ Hold</span></td><td><span class="pill pill-gap">Gap</span></td><td style="color:var(--t3);font-size:11px">FAQ schema + reviews</td></tr>
-        <tr><td style="font-weight:700">hotel near BTS Phrom Phong</td><td>880</td><td><div class="pos-wrap"><span style="font-weight:700;min-width:32px">18</span><div class="pos-bar"><div class="pos-fill" style="width:37%"></div></div></div></td><td><span style="color:#1D9E75;font-size:11px;font-weight:700">↑ +4</span></td><td><span class="pill pill-local">Local</span></td><td style="color:var(--t3);font-size:11px">GBP live — monitor weekly</td></tr>
-        <tr><td style="font-weight:700">rooftop bar Bangkok Sukhumvit</td><td>2,400</td><td><div class="pos-wrap"><span style="font-weight:700;min-width:32px;color:#bbb">NR</span><div class="pos-bar"><div class="pos-fill" style="width:0%"></div></div></div></td><td>—</td><td><span class="pill pill-gap">Gap</span></td><td style="color:var(--t3);font-size:11px">Dining/rooftop page SEO</td></tr>
-        <tr><td style="font-weight:700">Bangkok luxury spa hotel</td><td>1,000</td><td><div class="pos-wrap"><span style="font-weight:700;min-width:32px;color:#bbb">NR</span><div class="pos-bar"><div class="pos-fill" style="width:0%"></div></div></div></td><td>—</td><td><span class="pill pill-gap">Gap</span></td><td style="color:var(--t3);font-size:11px">Expand spa page content</td></tr>
-        <tr><td style="font-weight:700">5 star hotel Bangkok</td><td>6,600</td><td><div class="pos-wrap"><span style="font-weight:700;min-width:32px;color:#bbb">NR</span><div class="pos-bar"><div class="pos-fill" style="width:0%"></div></div></div></td><td>—</td><td><span class="pill pill-gap">Gap</span></td><td style="color:var(--t3);font-size:11px">Build domain authority first</td></tr>
+        <tr><td><strong>Fairmont Bangkok Sukhumvit</strong></td><td>5,400</td><td><strong style="color:var(--green);">#1</strong></td><td><span class="tag tag-green">Great ✓</span></td><td>Keep it up — no action needed</td></tr>
+        <tr><td><strong>Fairmont Bangkok</strong></td><td>8,100</td><td><strong style="color:var(--green);">#2</strong></td><td><span class="tag tag-green">Great ✓</span></td><td>Keep it up — no action needed</td></tr>
+        <tr><td>luxury hotel Bangkok Sukhumvit</td><td>1,900</td><td style="color:var(--amber);">Page 2 (#15)</td><td><span class="tag tag-gold">Fixable</span></td><td>Improve page wording and headings</td></tr>
+        <tr><td>best hotel Sukhumvit Bangkok</td><td>1,300</td><td style="color:var(--amber);">Page 2 (#20)</td><td><span class="tag tag-gold">Fixable</span></td><td>Add guest FAQ section to website</td></tr>
+        <tr><td>hotel near BTS Phrom Phong</td><td>880</td><td style="color:var(--amber);">Page 3+</td><td><span class="tag tag-gold">Fixable</span></td><td>Claim Google Maps listing first</td></tr>
+        <tr><td>rooftop bar Bangkok Sukhumvit</td><td>2,400</td><td style="color:var(--red);">Not found</td><td><span class="tag tag-red">Missing</span></td><td>Create a dedicated rooftop page</td></tr>
+        <tr><td>Bangkok luxury spa hotel</td><td>1,000</td><td style="color:var(--red);">Not found</td><td><span class="tag tag-red">Missing</span></td><td>Expand the spa page with more detail</td></tr>
+        <tr><td>5 star hotel Bangkok</td><td>6,600</td><td style="color:var(--red);">Not found</td><td><span class="tag tag-red">Long-term</span></td><td>Build reputation over time — won't be quick</td></tr>
       </tbody>
     </table>
-    </div>
-  </div>
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title">On-page audit</div>
-      <div class="audit-grid">
-        <div class="audit-item"><div class="audit-top"><span class="audit-name">Title tag</span><span class="audit-score s-hi">7/10</span></div><div class="score-bar"><div class="score-fill" style="width:70%"></div></div><div class="audit-note">Rooms/Dining/Offers updated ✓</div></div>
-        <div class="audit-item"><div class="audit-top"><span class="audit-name">Meta description</span><span class="audit-score s-lo">4/10</span></div><div class="score-bar"><div class="score-fill" style="width:40%"></div></div><div class="audit-note">Auto-generated by Google</div></div>
-        <div class="audit-item"><div class="audit-top"><span class="audit-name">H1 heading</span><span class="audit-score s-md">5/10</span></div><div class="score-bar"><div class="score-fill" style="width:50%"></div></div><div class="audit-note">JS-rendered — may not crawl</div></div>
-        <div class="audit-item"><div class="audit-top"><span class="audit-name">Schema markup</span><span class="audit-score s-lo">3/10</span></div><div class="score-bar"><div class="score-fill" style="width:30%"></div></div><div class="audit-note">No Hotel schema — blocks rich results</div></div>
-        <div class="audit-item"><div class="audit-top"><span class="audit-name">Content depth</span><span class="audit-score s-hi">7/10</span></div><div class="score-bar"><div class="score-fill" style="width:70%"></div></div><div class="audit-note">Strong copy. Missing FAQ</div></div>
-        <div class="audit-item"><div class="audit-top"><span class="audit-name">Internal linking</span><span class="audit-score s-md">6/10</span></div><div class="score-bar"><div class="score-fill" style="width:60%"></div></div><div class="audit-note">Nav OK — missing body links</div></div>
-        <div class="audit-item"><div class="audit-top"><span class="audit-name">Image alt text</span><span class="audit-score s-md">5/10</span></div><div class="score-bar"><div class="score-fill" style="width:50%"></div></div><div class="audit-note">JS images likely missing alt</div></div>
-        <div class="audit-item"><div class="audit-top"><span class="audit-name">Page speed</span><span class="audit-score s-md">5/10</span></div><div class="score-bar"><div class="score-fill" style="width:50%"></div></div><div class="audit-note">~52/100 — LCP &gt;3.5s</div></div>
-      </div>
-    </div>
-    <div>
-      <div class="card" style="margin-bottom:14px">
-        <div class="card-title">Technical health</div>
-        <div class="tech-row"><div class="tech-ico t-pass">✓</div><span class="tech-name">HTTPS / SSL</span><span class="tech-note">Secure</span></div>
-        <div class="tech-row"><div class="tech-ico t-pass">✓</div><span class="tech-name">Mobile-friendly</span><span class="tech-note">Responsive confirmed</span></div>
-        <div class="tech-row"><div class="tech-ico t-warn">!</div><span class="tech-name">XML sitemap</span><span class="tech-note">Verify in Search Console</span></div>
-        <div class="tech-row"><div class="tech-ico t-warn">!</div><span class="tech-name">Robots.txt</span><span class="tech-note">JS SPA may block crawl</span></div>
-        <div class="tech-row"><div class="tech-ico t-fail">✗</div><span class="tech-name">Hotel schema markup</span><span class="tech-note">No JSON-LD detected</span></div>
-        <div class="tech-row"><div class="tech-ico t-fail">✗</div><span class="tech-name">JS rendering</span><span class="tech-note">Googlebot may miss content</span></div>
-        <div class="tech-row"><div class="tech-ico t-pass">✓</div><span class="tech-name">Google Business Profile</span><span class="tech-note">Claimed &amp; optimised ← new this week</span></div>
-        <div class="tech-row"><div class="tech-ico t-warn">!</div><span class="tech-name">Core Web Vitals</span><span class="tech-note">Est. fail on mobile LCP</span></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Competitor SERP positions</div>
-        <div class="comp-row"><span class="comp-name">Fairmont Bangkok</span><div class="comp-bar-bg"><div class="comp-bar-fill" style="width:100%"></div></div><span class="comp-pos">#1–3</span></div>
-        <div class="comp-row"><span class="comp-name">Park Hyatt Bangkok</span><div class="comp-bar-bg"><div class="comp-bar-fill" style="width:82%"></div></div><span class="comp-pos">#4–7</span></div>
-        <div class="comp-row"><span class="comp-name">Marriott Marquis</span><div class="comp-bar-bg"><div class="comp-bar-fill" style="width:78%"></div></div><span class="comp-pos">#3–6</span></div>
-        <div class="comp-row"><span class="comp-name">JW Marriott BKK</span><div class="comp-bar-bg"><div class="comp-bar-fill" style="width:68%"></div></div><span class="comp-pos">#5–8</span></div>
-        <div class="comp-row"><span class="comp-name">Kempinski Bangkok</span><div class="comp-bar-bg"><div class="comp-bar-fill" style="width:50%"></div></div><span class="comp-pos">#8–14</span></div>
-        <div class="insight">
-          <div class="insight-title">Key insights</div>
-          <div class="insight-row"><div class="insight-dot"></div><span>All top 3 competitors have Hotel schema — fastest gap to close</span></div>
-          <div class="insight-row"><div class="insight-dot"></div><span>Marriott/Hyatt DR 80+. Fairmont.com (Accor) strong — leverage it</span></div>
-          <div class="insight-row"><div class="insight-dot"></div><span>Untapped: hotel near BTS Phrom Phong · pet-friendly hotel Sukhumvit</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">Weekly charts</div>
-    <div class="two-col">
-      <div><div style="font-size:11px;color:var(--t3);margin-bottom:8px">Keyword search volume by target</div><div style="display:flex;flex-direction:column;gap:6px;padding-top:4px">
-      <div style="font-size:11px;color:var(--t2);display:flex;align-items:center;gap:6px"><span style="width:140px;flex-shrink:0">5 star hotel BKK</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:100%;height:100%;background:#0a0a0a;border-radius:2px"></div></div><span style="font-size:10px;color:var(--t3);min-width:36px;text-align:right">6,600</span></div>
-      <div style="font-size:11px;color:var(--t2);display:flex;align-items:center;gap:6px"><span style="width:140px;flex-shrink:0">Fairmont Bangkok</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:100%;height:100%;background:#0a0a0a;border-radius:2px"></div></div><span style="font-size:10px;color:var(--t3);min-width:36px;text-align:right">8,100</span></div>
-      <div style="font-size:11px;color:var(--t2);display:flex;align-items:center;gap:6px"><span style="width:140px;flex-shrink:0">Rooftop bar Bangkok</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:36%;height:100%;background:#0a0a0a;border-radius:2px"></div></div><span style="font-size:10px;color:var(--t3);min-width:36px;text-align:right">2,400</span></div>
-      <div style="font-size:11px;color:var(--t2);display:flex;align-items:center;gap:6px"><span style="width:140px;flex-shrink:0">Fairmont BKK SKV</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:82%;height:100%;background:#0a0a0a;border-radius:2px"></div></div><span style="font-size:10px;color:var(--t3);min-width:36px;text-align:right">5,400</span></div>
-      <div style="font-size:11px;color:var(--t2);display:flex;align-items:center;gap:6px"><span style="width:140px;flex-shrink:0">Lux hotel SKV BKK</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:29%;height:100%;background:#0a0a0a;border-radius:2px"></div></div><span style="font-size:10px;color:var(--t3);min-width:36px;text-align:right">1,900</span></div>
-      <div style="font-size:11px;color:var(--t2);display:flex;align-items:center;gap:6px"><span style="width:140px;flex-shrink:0">Best hotel SKV BKK</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:20%;height:100%;background:#0a0a0a;border-radius:2px"></div></div><span style="font-size:10px;color:var(--t3);min-width:36px;text-align:right">1,300</span></div>
-      <div style="font-size:11px;color:var(--t2);display:flex;align-items:center;gap:6px"><span style="width:140px;flex-shrink:0">BKK luxury spa hotel</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:15%;height:100%;background:#0a0a0a;border-radius:2px"></div></div><span style="font-size:10px;color:var(--t3);min-width:36px;text-align:right">1,000</span></div>
-    </div></div>
-      <div><div style="font-size:11px;color:var(--t3);margin-bottom:8px">On-page audit radar</div><div style="display:flex;flex-direction:column;gap:6px;padding-top:4px">
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:110px;flex-shrink:0;color:var(--t2)">Title tag</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:70%;height:100%;background:#0a0a0a;border-radius:2px"></div></div><span style="font-size:10px;font-weight:700;min-width:28px;text-align:right">7/10</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:110px;flex-shrink:0;color:var(--t2)">Meta desc</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:40%;height:100%;background:#D85A30;border-radius:2px"></div></div><span style="font-size:10px;font-weight:700;min-width:28px;text-align:right">4/10</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:110px;flex-shrink:0;color:var(--t2)">H1 heading</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:50%;height:100%;background:#BA7517;border-radius:2px"></div></div><span style="font-size:10px;font-weight:700;min-width:28px;text-align:right">5/10</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:110px;flex-shrink:0;color:var(--t2)">Schema</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:30%;height:100%;background:#D85A30;border-radius:2px"></div></div><span style="font-size:10px;font-weight:700;min-width:28px;text-align:right">3/10</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:110px;flex-shrink:0;color:var(--t2)">Content depth</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:70%;height:100%;background:#1D9E75;border-radius:2px"></div></div><span style="font-size:10px;font-weight:700;min-width:28px;text-align:right">7/10</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:110px;flex-shrink:0;color:var(--t2)">Int. linking</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:60%;height:100%;background:#BA7517;border-radius:2px"></div></div><span style="font-size:10px;font-weight:700;min-width:28px;text-align:right">6/10</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:110px;flex-shrink:0;color:var(--t2)">Image alt</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:50%;height:100%;background:#BA7517;border-radius:2px"></div></div><span style="font-size:10px;font-weight:700;min-width:28px;text-align:right">5/10</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:110px;flex-shrink:0;color:var(--t2)">Page speed</span><div style="flex:1;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:50%;height:100%;background:#D85A30;border-radius:2px"></div></div><span style="font-size:10px;font-weight:700;min-width:28px;text-align:right">5/10</span></div>
-    </div></div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ TAB: LLM VISIBILITY ═══ -->
-
-<div class="panel" id="tab-llm">
-  <div class="llm-top-row">
-    <div class="gauge-card">
-      <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:10px;align-self:flex-start">AI Visibility</div>
-      <div style="position:relative;width:160px;height:90px;margin-bottom:12px">
-        <svg width="160" height="90" viewBox="0 0 160 90">
-          <path d="M14 84 A72 72 0 0 1 146 84" fill="none" stroke="#e8e8e8" stroke-width="14" stroke-linecap="round"/>
-          <path id="gauge-arc" d="M14 84 A72 72 0 0 1 146 84" fill="none" stroke="#0a0a0a" stroke-width="14" stroke-linecap="round" stroke-dasharray="226" stroke-dashoffset="226"/>
-        </svg>
-        <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);text-align:center">
-          <div style="font-size:26px;font-weight:700;line-height:1" id="gauge-num">8</div>
-          <div style="font-size:13px;color:var(--t3)">/100</div>
-        </div>
-      </div>
-      <div style="font-size:14px;font-weight:700">Low</div>
-      <div style="font-size:11px;color:var(--t3);text-align:center;margin-top:8px;line-height:1.5;max-width:160px">New property — establishing from Week 1</div>
-    </div>
-    <div class="metrics-card">
-      <div style="display:flex;gap:0;border-bottom:0.5px solid var(--border);margin-bottom:16px">
-        <div style="font-size:12px;font-weight:600;padding:6px 14px;border-bottom:2px solid #0a0a0a;margin-bottom:-0.5px;color:var(--text)">Main metrics</div>
-      </div>
-      <div style="display:flex;gap:28px;margin-bottom:16px;flex-wrap:wrap;align-items:flex-end">
-        <div><div style="font-size:12px;color:var(--t3);display:flex;align-items:center;margin-bottom:3px"><span style="width:8px;height:8px;border-radius:50%;background:#378ADD;display:inline-block;margin-right:5px"></span>Mentions</div><div style="display:flex;align-items:baseline;gap:6px"><div style="font-size:20px;font-weight:700">~14</div><span style="font-size:11px;font-weight:600;color:#1D9E75">+2</span></div></div>
-        <div><div style="font-size:12px;color:var(--t3);display:flex;align-items:center;margin-bottom:3px"><span style="width:8px;height:8px;border-radius:50%;background:#1D9E75;display:inline-block;margin-right:5px"></span>Citations</div><div style="display:flex;align-items:baseline;gap:6px"><div style="font-size:20px;font-weight:700">5</div><span style="font-size:11px;font-weight:600;color:#1D9E75">+1</span></div></div>
-        <div><div style="font-size:12px;color:var(--t3);display:flex;align-items:center;margin-bottom:3px"><span style="width:8px;height:8px;border-radius:50%;background:#D85A30;display:inline-block;margin-right:5px"></span>Cited pages</div><div style="display:flex;align-items:baseline;gap:6px"><div style="font-size:20px;font-weight:700">3</div><span style="font-size:11px;font-weight:600;color:#1D9E75">+1</span></div></div>
-        <div style="margin-left:auto;font-size:11px;color:var(--t3);align-self:flex-end">Data as of Mar 23, 2026</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:0;border:0.5px solid var(--border);border-radius:8px;overflow:hidden;margin-top:8px">
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;background:var(--s2);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);padding:7px 12px">
-        <span>Week</span><span style="text-align:center">Mentions</span><span style="text-align:center">Citations</span><span style="text-align:center">Pages</span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;font-size:12px;padding:9px 12px;border-top:0.5px solid var(--border)">
-        <span style="color:var(--t3)">24 Mar</span><span style="text-align:center;font-weight:700">12</span><span style="text-align:center;font-weight:700">4</span><span style="text-align:center;font-weight:700">2</span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;font-size:12px;padding:9px 12px;border-top:0.5px solid var(--border);background:var(--s2)">
-        <span style="color:var(--text);font-weight:700">31 Mar</span><span style="text-align:center;font-weight:700;color:#1D9E75">~14 ↑</span><span style="text-align:center;font-weight:700;color:#1D9E75">5 ↑</span><span style="text-align:center;font-weight:700;color:#1D9E75">3 ↑</span>
-      </div>
-    </div>
-      <div style="display:flex;gap:16px;margin-top:8px;font-size:11px;color:var(--t3)">
-        <span><span style="display:inline-block;width:12px;height:2px;background:#378ADD;vertical-align:middle;margin-right:4px"></span>Mentions</span>
-        <span><span style="display:inline-block;width:12px;height:2px;background:#1D9E75;vertical-align:middle;margin-right:4px"></span>Citations</span>
-        <span><span style="display:inline-block;width:12px;height:2px;background:#D85A30;vertical-align:middle;margin-right:4px"></span>Cited pages</span>
-      </div>
+    <div class="callout info">
+      <strong>Why does position matter?</strong> Studies show 75% of people never scroll past the first page of Google results.
+      Being on page 2 is almost the same as not being there at all. Our goal is to get every key search onto page 1.
     </div>
   </div>
 
-  <div class="llm-bottom-row">
-    <div class="metrics-card">
-      <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:12px">Distribution by LLM</div>
-      <div class="dist-row"><div class="dist-name"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="#10a37f"/><text x="7" y="10.5" text-anchor="middle" font-size="8" fill="white" font-weight="bold">C</text></svg>ChatGPT</div><div class="dist-bar-bg"><div class="dist-bar-fill" style="width:45%;background:#10a37f"></div></div><div class="dist-pct">45%</div><div class="dist-count">~6</div></div>
-      <div class="dist-row"><div class="dist-name"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="#4285f4"/><text x="7" y="10.5" text-anchor="middle" font-size="7" fill="white" font-weight="bold">G</text></svg>AI Overview</div><div class="dist-bar-bg"><div class="dist-bar-fill" style="width:18%;background:#4285f4"></div></div><div class="dist-pct">18%</div><div class="dist-count">~2</div></div>
-      <div class="dist-row"><div class="dist-name"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="#6f42c1"/><text x="7" y="10.5" text-anchor="middle" font-size="7" fill="white" font-weight="bold">P</text></svg>Perplexity</div><div class="dist-bar-bg"><div class="dist-bar-fill" style="width:22%;background:#6f42c1"></div></div><div class="dist-pct">22%</div><div class="dist-count">~3</div></div>
-      <div class="dist-row"><div class="dist-name"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="#0a0a0a"/><text x="7" y="10.5" text-anchor="middle" font-size="7" fill="white" font-weight="bold">Cl</text></svg>Claude</div><div class="dist-bar-bg"><div class="dist-bar-fill" style="width:15%;background:#0a0a0a"></div></div><div class="dist-pct">15%</div><div class="dist-count">~2</div></div>
-      <div style="font-size:10px;color:var(--t3);margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border)">Manual checks · connect Search Console for verified data</div>
-    </div>
-    <div class="metrics-card">
-      <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:12px">AI visibility vs competitors</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:150px;font-weight:600">Marriott Marquis BKK</span><div class="dist-bar-bg" style="flex:1"><div class="dist-bar-fill" style="width:71%;background:#1D9E75"></div></div><span style="font-weight:700;color:#1D9E75;min-width:24px">71</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:150px;font-weight:600">Park Hyatt Bangkok</span><div class="dist-bar-bg" style="flex:1"><div class="dist-bar-fill" style="width:62%;background:#1D9E75"></div></div><span style="font-weight:700;color:#1D9E75;min-width:24px">62</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:150px;font-weight:600">JW Marriott BKK</span><div class="dist-bar-bg" style="flex:1"><div class="dist-bar-fill" style="width:58%;background:#1D9E75"></div></div><span style="font-weight:700;color:#1D9E75;min-width:24px">58</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:150px;font-weight:600">Kempinski Bangkok</span><div class="dist-bar-bg" style="flex:1"><div class="dist-bar-fill" style="width:34%;background:#BA7517"></div></div><span style="font-weight:700;color:#BA7517;min-width:24px">34</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:150px;font-weight:700">Fairmont Bangkok</span><div class="dist-bar-bg" style="flex:1"><div class="dist-bar-fill" style="width:8%;background:#D85A30"></div></div><span style="font-weight:700;color:#D85A30;min-width:24px">8</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- LLM RESULT TRACKER -->
-  <div class="card">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-      <div>
-        <div class="card-title" style="margin-bottom:4px">LLM results tracker</div>
-        <div style="font-size:11px;color:var(--t3)">Test each Monday &middot; mark what you found &middot; score updates live</div>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <div style="background:var(--s2);border-radius:8px;padding:8px 14px;text-align:center;min-width:58px"><div style="font-size:20px;font-weight:700" id="trk-score">8</div><div style="font-size:9px;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-top:2px">Score/100</div></div>
-        <div style="background:#e2f5ec;border-radius:8px;padding:8px 14px;text-align:center;min-width:50px"><div style="font-size:20px;font-weight:700;color:#065f46" id="trk-strong">0</div><div style="font-size:9px;color:#065f46;letter-spacing:1px;text-transform:uppercase;margin-top:2px">Strong</div></div>
-        <div style="background:#fef3dc;border-radius:8px;padding:8px 14px;text-align:center;min-width:50px"><div style="font-size:20px;font-weight:700;color:#92400e" id="trk-partial">0</div><div style="font-size:9px;color:#92400e;letter-spacing:1px;text-transform:uppercase;margin-top:2px">Partial</div></div>
-        <div style="background:#fee8e8;border-radius:8px;padding:8px 14px;text-align:center;min-width:50px"><div style="font-size:20px;font-weight:700;color:#b91c1c" id="trk-gap">0</div><div style="font-size:9px;color:#b91c1c;letter-spacing:1px;text-transform:uppercase;margin-top:2px">Gap</div></div>
-      </div>
-    </div>
-    <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap" id="trk-week-tabs">
-      <button data-w="1" onclick="trkWeek(1)" style="font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text);cursor:pointer;font-family:inherit">Week 24 Mar</button>
-      <button data-w="2" onclick="trkWeek(2)" style="font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;border:0.5px solid #0a0a0a;background:#0a0a0a;color:#fff;cursor:pointer;font-family:inherit">Week 31 Mar</button>
-      <button data-w="3" onclick="trkWeek(3)" style="font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text);cursor:pointer;font-family:inherit">Week 7 Apr</button>
-      <button data-w="4" onclick="trkWeek(4)" style="font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text);cursor:pointer;font-family:inherit">Week 14 Apr</button>
-    </div>
-    <div style="background:var(--s2);border-radius:8px;padding:8px 14px;margin-bottom:12px;display:flex;gap:16px;font-size:11px;color:var(--t2);flex-wrap:wrap">
-      <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#1D9E75;margin-right:5px;vertical-align:middle"></span>Strong = mentioned in top 3</span>
-      <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#D85A30;margin-right:5px;vertical-align:middle"></span>Partial = mentioned but not top 3</span>
-      <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#ccc;margin-right:5px;vertical-align:middle"></span>Gap = not mentioned</span>
-    </div>
-    <div id="trk-rows"></div>
-    <div style="margin-top:14px;padding-top:12px;border-top:0.5px solid var(--border);text-align:right">
-      <button onclick="trkExport()" class="btn btn-dark" style="font-size:11px;padding:5px 16px">Export results</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">How to improve LLM / AI search visibility</div>
-    <div class="tip-row"><div class="tip-num">1</div><div style="font-size:12px;color:var(--t2);line-height:1.6"><span style="font-weight:700;color:var(--text)">Add Hotel JSON-LD schema</span> — single biggest LLM visibility lever. Implement LodgingBusiness + Hotel + FAQPage.</div></div>
-    <div class="tip-row"><div class="tip-num">2</div><div style="font-size:12px;color:var(--t2);line-height:1.6"><span style="font-weight:700;color:var(--text)">Build topical authority content</span> — pillar articles on luxury Bangkok hotels, rooftop dining, spa wellness.</div></div>
-    <div class="tip-row"><div class="tip-num">3</div><div style="font-size:12px;color:var(--t2);line-height:1.6"><span style="font-weight:700;color:var(--text)">Earn OTA citations</span> — ChatGPT and Perplexity cite Expedia, TripAdvisor. Maintain review volume.</div></div>
-    <div class="tip-row"><div class="tip-num">4</div><div style="font-size:12px;color:var(--t2);line-height:1.6"><span style="font-weight:700;color:var(--text)">Get press and editorial mentions</span> — Forbes Travel, Condé Nast. PR outreach improves AI citation rate.</div></div>
-    <div class="tip-row"><div class="tip-num">5</div><div style="font-size:12px;color:var(--t2);line-height:1.6"><span style="font-weight:700;color:var(--text)">Optimise for People Also Ask</span> — FAQ content pulled verbatim into AI overviews. Add structured FAQ to homepage.</div></div>
-  </div>
-
-  <!-- TOPICS TABLE -->
-  <div class="card">
-    <div class="topics-tabs">
-      <button class="t-tab on" onclick="switchTopics('performing',this)">Performing topics <span style="background:rgba(255,255,255,0.2);padding:1px 6px;border-radius:10px;font-size:10px;margin-left:4px">12</span></button>
-      <button class="t-tab" onclick="switchTopics('opportunity',this)">Topic opportunities <span style="background:var(--s2);color:var(--t2);padding:1px 6px;border-radius:10px;font-size:10px;margin-left:4px">8</span></button>
-    </div>
-    <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Topic</th><th style="color:var(--text)">Visibility</th><th>Mentions</th><th>Trend</th><th>AI volume</th><th>Status</th></tr></thead><tbody id="topics-body"></tbody></table></div>
-  </div>
-</div>
-
-<!-- ═══ TAB: CONTENT SUGGESTIONS ═══ -->
-
-<div class="panel" id="tab-content">
-  <div class="suggest-grid">
-    <div class="suggest-card">
-      <div class="suggest-type">Title tags — ready to use</div>
-      <div class="suggest-item" onclick="copyItem(this,'Fairmont Bangkok Sukhumvit | 5-Star Hotel on Sukhumvit 20')"><span style="flex:1">Fairmont Bangkok Sukhumvit | 5-Star Hotel on Sukhumvit 20</span><span class="copy-lbl">copy</span></div>
-      <div class="suggest-item" onclick="copyItem(this,'Luxury Spa Bangkok | Fairmont Bangkok Sukhumvit')"><span style="flex:1">Luxury Spa Bangkok | Fairmont Bangkok Sukhumvit</span><span class="copy-lbl">copy</span></div>
-      <div class="suggest-item" onclick="copyItem(this,'Rooftop Bar Bangkok | Fairmont Bangkok Sukhumvit')"><span style="flex:1">Rooftop Bar Bangkok | Fairmont Bangkok Sukhumvit</span><span class="copy-lbl">copy</span></div>
-      <div class="suggest-item" onclick="copyItem(this,'Family Hotel Bangkok Sukhumvit | Kids Club | Fairmont')"><span style="flex:1">Family Hotel Bangkok Sukhumvit | Kids Club | Fairmont</span><span class="copy-lbl">copy</span></div>
-    </div>
-    <div class="suggest-card">
-      <div class="suggest-type">Meta descriptions — ready to use</div>
-      <div class="suggest-item" onclick="copyItem(this,'Experience Thailand\'s first Fairmont — 5-star luxury at Sukhumvit 20. Rooftop bar, spa &amp; Fairmont Gold. Book direct for best rates.')"><span style="flex:1">Experience Thailand's first Fairmont — 5-star luxury at Sukhumvit 20. Rooftop bar, spa & Fairmont Gold. Book direct.</span><span class="copy-lbl">copy</span></div>
-      <div class="suggest-item" onclick="copyItem(this,'Escape to Fairmont Spa Bangkok — hammam, sauna, hydrotherapy & Thai healing rituals. Book your treatment today.')"><span style="flex:1">Escape to Fairmont Spa Bangkok — hammam, sauna, hydrotherapy & Thai healing rituals.</span><span class="copy-lbl">copy</span></div>
-    </div>
-    <div class="suggest-card">
-      <div class="suggest-type">Gap keywords to add to pages</div>
-      <div class="suggest-item"><span style="flex:1">rooftop bar Bangkok Sukhumvit</span><span class="copy-lbl">2,400/mo</span></div>
-      <div class="suggest-item"><span style="flex:1">luxury hotel Sukhumvit Bangkok</span><span class="copy-lbl">1,900/mo</span></div>
-      <div class="suggest-item"><span style="flex:1">Bangkok luxury spa hotel</span><span class="copy-lbl">1,000/mo</span></div>
-      <div class="suggest-item"><span style="flex:1">hotel near BTS Phrom Phong</span><span class="copy-lbl">880/mo</span></div>
-      <div class="suggest-item"><span style="flex:1">pet friendly hotel Bangkok</span><span class="copy-lbl">720/mo</span></div>
-      <div class="suggest-item"><span style="flex:1">family hotel Bangkok Sukhumvit</span><span class="copy-lbl">720/mo</span></div>
-    </div>
-    <div class="suggest-card">
-      <div class="suggest-type">Content priority queue</div>
-      <div class="suggest-item"><span style="flex:1">Spa page — target Bangkok luxury spa hotel</span><span class="copy-lbl">P1</span></div>
-      <div class="suggest-item"><span style="flex:1">Rooftop page — target rooftop bar Bangkok</span><span class="copy-lbl">P1</span></div>
-      <div class="suggest-item"><span style="flex:1">Homepage FAQ — 8 Q&As + FAQPage schema</span><span class="copy-lbl">P2</span></div>
-      <div class="suggest-item"><span style="flex:1">Family page — target family hotel Bangkok</span><span class="copy-lbl">P2</span></div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ TAB: GA4 ANALYTICS ═══ -->
-
-<div class="panel" id="tab-ga4">
-
-  <!-- Header -->
-  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:12px">
-      
-      <div>
-        <div style="font-size:16px;font-weight:700">GA4 Analytics</div>
-        <div style="font-size:11px;color:var(--t3)">fairmont.com &nbsp;·&nbsp; Bangkok Sukhumvit property &nbsp;·&nbsp; <span style="color:#e37400;font-weight:600">Data from uploaded report</span></div>
-      </div>
-    </div>
-    <span class="badge" style="background:#fef3dc;color:#92400e;border-color:#f9ab00">Revenue tracking: USD · Partial (US only)</span>
-  </div>
-
-  <!-- Top KPIs -->
-  <div class="kpi-grid">
-    <div class="kpi" style="border-top:2px solid #e37400">
-      <div class="kpi-label">Total Sessions</div>
-      <div class="kpi-value">1,711</div>
-      <div class="kpi-sub">All countries</div>
-      <div class="kpi-delta neu">Report period</div>
-    </div>
-    <div class="kpi" style="border-top:2px solid #e37400">
-      <div class="kpi-label">Page Views</div>
-      <div class="kpi-value">3,853</div>
-      <div class="kpi-sub">All pages · fairmont.com</div>
-      <div class="kpi-delta neu">2.25 pages/session</div>
-    </div>
-    <div class="kpi" style="border-top:2px solid #f9ab00">
-      <div class="kpi-label">Homepage Views</div>
-      <div class="kpi-value">1,237</div>
-      <div class="kpi-sub">32.1% of all views</div>
-      <div class="kpi-delta up">Top page</div>
-    </div>
-    <div class="kpi" style="border-top:2px solid #34a853">
-      <div class="kpi-label">Booking Funnel</div>
-      <div class="kpi-value">495</div>
-      <div class="kpi-sub">/booking/en/stay views</div>
-      <div class="kpi-delta up">40% of homepage</div>
-    </div>
-    <div class="kpi" style="border-top:2px solid #34a853">
-      <div class="kpi-label">Revenue (USD)</div>
-      <div class="kpi-value" style="font-size:20px">$2,987</div>
-      <div class="kpi-sub">US market only</div>
-      <div class="kpi-delta neu">176 US sessions</div>
-    </div>
-    <div class="kpi" style="border-top:2px solid #4285f4">
-      <div class="kpi-label">Top Market</div>
-      <div class="kpi-value" style="font-size:17px;padding-top:4px">Thailand</div>
-      <div class="kpi-sub">589 sessions · 34.4%</div>
-      <div class="kpi-delta up">Domestic dominant</div>
-    </div>
-    <div class="kpi" style="border-top:2px solid #4285f4">
-      <div class="kpi-label">Avg Engagement</div>
-      <div class="kpi-value">84%</div>
-      <div class="kpi-sub">Most markets &gt;80%</div>
-      <div class="kpi-delta up">Strong quality</div>
-    </div>
-    <div class="kpi" style="border-top:2px solid #D85A30">
-      <div class="kpi-label">Markets Tracked</div>
-      <div class="kpi-value">50+</div>
-      <div class="kpi-sub">Countries w/ sessions</div>
-      <div class="kpi-delta neu">Global reach</div>
-    </div>
-  </div>
-
-  <!-- Page Performance + Top Countries -->
-  <div class="two-col">
-
-    <!-- Top Pages -->
-    <div class="card">
-      <div class="card-title" style="color:#e37400">Top pages <span style="font-weight:400;color:var(--t3)">· by views</span></div>
-      <div style="overflow-x:auto">
-      <table class="tbl">
-        <thead><tr><th>Page</th><th>Views</th><th>% Share</th><th>Bar</th></tr></thead>
-        <tbody>
-          <tr><td style="font-weight:600;font-size:11px">Homepage</td><td>1,237</td><td style="color:#e37400;font-weight:700">31.8%</td><td><div style="width:100%;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:100%;height:100%;background:#e37400;border-radius:2px"></div></div></td></tr>
-          <tr><td style="font-weight:600;font-size:11px">Booking — Stay</td><td>495</td><td style="color:#34a853;font-weight:700">12.7%</td><td><div style="width:100%;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:40%;height:100%;background:#34a853;border-radius:2px"></div></div></td></tr>
-          <tr><td style="font-weight:600;font-size:11px">Select Room</td><td>206</td><td>5.3%</td><td><div style="width:100%;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:16.6%;height:100%;background:#4285f4;border-radius:2px"></div></div></td></tr>
-          <tr><td style="font-weight:600;font-size:11px">Dining</td><td>198</td><td>5.1%</td><td><div style="width:100%;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:16%;height:100%;background:#4285f4;border-radius:2px"></div></div></td></tr>
-          <tr><td style="font-weight:600;font-size:11px">Meetings</td><td>137</td><td>3.5%</td><td><div style="width:100%;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:11%;height:100%;background:#6f42c1;border-radius:2px"></div></div></td></tr>
-          <tr><td style="font-weight:600;font-size:11px">Rooms</td><td>128</td><td>3.3%</td><td><div style="width:100%;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:10.3%;height:100%;background:#6f42c1;border-radius:2px"></div></div></td></tr>
-          <tr><td style="font-weight:600;font-size:11px">Booking — Search</td><td>123</td><td>3.2%</td><td><div style="width:100%;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:9.9%;height:100%;background:#34a853;border-radius:2px"></div></div></td></tr>
-          <tr><td style="font-weight:600;font-size:11px">Be First to Stay offer</td><td>116</td><td>3.0%</td><td><div style="width:100%;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:9.4%;height:100%;background:#D85A30;border-radius:2px"></div></div></td></tr>
-          <tr><td style="font-weight:600;font-size:11px">The Wiggle Room</td><td>113</td><td>2.9%</td><td><div style="width:100%;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:9.1%;height:100%;background:#D85A30;border-radius:2px"></div></div></td></tr>
-          <tr><td style="font-weight:600;font-size:11px">Offers</td><td>90</td><td>2.3%</td><td><div style="width:100%;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:7.3%;height:100%;background:#BA7517;border-radius:2px"></div></div></td></tr>
-          <tr><td style="font-weight:600;font-size:11px">Location &amp; Contact</td><td>78</td><td>2.0%</td><td><div style="width:100%;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:6.3%;height:100%;background:#BA7517;border-radius:2px"></div></div></td></tr>
-          <tr><td style="font-weight:600;font-size:11px">Wellness / Spa</td><td>84</td><td>2.2%</td><td><div style="width:100%;height:5px;background:#e8e8e8;border-radius:2px"><div style="width:6.8%;height:100%;background:#BA7517;border-radius:2px"></div></div></td></tr>
-        </tbody>
-      </table>
-      </div>
-      <div style="margin-top:10px;padding:9px 12px;background:#fef3dc;border-radius:6px;font-size:11px;color:#92400e;line-height:1.5;border-left:2px solid #f9ab00">
-        <strong>Booking funnel:</strong> 1,237 homepage → 495 booking/stay (40%) → 206 select-room (16.6%) → 15 complete-details (1.2%). Large drop-off between select-room and checkout — review UX.
-      </div>
+  <!-- ══════════════ SECTION 2 — AI VISIBILITY ══════════════ -->
+  <div class="section">
+    <div class="section-eyebrow">Section 02</div>
+    <div class="section-title">Do AI assistants recommend us?</div>
+    <div class="section-explain">
+      More and more travellers now ask ChatGPT or Google's AI "what's the best luxury hotel in Bangkok?" instead of searching Google directly.
+      This section measures how often AI mentions Fairmont — and how we compare to competitors.
     </div>
 
-    <!-- Top Countries -->
-    <div class="card">
-      <div class="card-title" style="color:#e37400">Sessions by country <span style="font-weight:400;color:var(--t3)">· top 15 markets</span></div>
-      <div style="display:flex;flex-direction:column;gap:7px" id="ga4-countries">
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇹🇭 Thailand</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:100%;height:100%;background:#e37400;border-radius:3px"></div></div><span style="font-weight:700;color:#e37400;min-width:36px;text-align:right">589</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">34.4%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇸🇬 Singapore</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:33.8%;height:100%;background:#4285f4;border-radius:3px"></div></div><span style="font-weight:600;min-width:36px;text-align:right">199</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">11.6%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇺🇸 United States</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:29.9%;height:100%;background:#34a853;border-radius:3px"></div></div><span style="font-weight:600;min-width:36px;text-align:right">176</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">10.3%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇨🇦 Canada</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:21.7%;height:100%;background:#4285f4;border-radius:3px"></div></div><span style="font-weight:600;min-width:36px;text-align:right">128</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">7.5%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇫🇷 France</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:14.3%;height:100%;background:#4285f4;border-radius:3px"></div></div><span style="font-weight:600;min-width:36px;text-align:right">84</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">4.9%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇦🇺 Australia</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:13.6%;height:100%;background:#4285f4;border-radius:3px"></div></div><span style="font-weight:600;min-width:36px;text-align:right">80</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">4.7%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇯🇵 Japan</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:8.1%;height:100%;background:#6f42c1;border-radius:3px"></div></div><span style="font-weight:600;min-width:36px;text-align:right">48</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">2.8%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇬🇧 United Kingdom</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:6.1%;height:100%;background:#6f42c1;border-radius:3px"></div></div><span style="font-weight:600;min-width:36px;text-align:right">36</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">2.1%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇹🇼 Taiwan</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:5.9%;height:100%;background:#6f42c1;border-radius:3px"></div></div><span style="font-weight:600;min-width:36px;text-align:right">35</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">2.0%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇮🇳 India</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:5.9%;height:100%;background:#6f42c1;border-radius:3px"></div></div><span style="font-weight:600;min-width:36px;text-align:right">35</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">2.0%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇭🇰 Hong Kong</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:5.9%;height:100%;background:#6f42c1;border-radius:3px"></div></div><span style="font-weight:600;min-width:36px;text-align:right">35</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">2.0%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇰🇷 South Korea</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:5.4%;height:100%;background:#BA7517;border-radius:3px"></div></div><span style="font-weight:600;min-width:36px;text-align:right">32</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">1.9%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇮🇩 Indonesia</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:3.9%;height:100%;background:#BA7517;border-radius:3px"></div></div><span style="font-weight:600;min-width:36px;text-align:right">23</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">1.3%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇩🇪 Germany</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:3.6%;height:100%;background:#BA7517;border-radius:3px"></div></div><span style="font-weight:600;min-width:36px;text-align:right">21</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">1.2%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:130px;font-weight:600;flex-shrink:0">🇨🇭 Switzerland</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="width:3.1%;height:100%;background:#BA7517;border-radius:3px"></div></div><span style="font-weight:600;min-width:36px;text-align:right">18</span><span style="font-size:10px;color:var(--t3);min-width:32px;text-align:right">1.1%</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Engagement by country + charts row -->
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title" style="color:#e37400">Engagement rate by market <span style="font-weight:400;color:var(--t3)">· top 12</span></div>
-      <table class="tbl">
-        <thead><tr><th>Country</th><th>Sessions</th><th>Eng. Rate</th><th>Quality</th></tr></thead>
-        <tbody>
-          <tr><td style="font-weight:600">🇩🇪 Germany</td><td>21</td><td style="color:#1D9E75;font-weight:700">95.2%</td><td><span class="pill" style="background:#e2f5ec;color:#065f46;font-size:9px">Excellent</span></td></tr>
-          <tr><td style="font-weight:600">🇳🇱 Netherlands</td><td>10</td><td style="color:#1D9E75;font-weight:700">100%</td><td><span class="pill" style="background:#e2f5ec;color:#065f46;font-size:9px">Excellent</span></td></tr>
-          <tr><td style="font-weight:600">🇹🇼 Taiwan</td><td>35</td><td style="color:#1D9E75;font-weight:700">91.4%</td><td><span class="pill" style="background:#e2f5ec;color:#065f46;font-size:9px">Excellent</span></td></tr>
-          <tr><td style="font-weight:600">🇭🇰 Hong Kong</td><td>35</td><td style="color:#1D9E75;font-weight:700">91.4%</td><td><span class="pill" style="background:#e2f5ec;color:#065f46;font-size:9px">Excellent</span></td></tr>
-          <tr><td style="font-weight:600">🇰🇷 South Korea</td><td>32</td><td style="color:#1D9E75;font-weight:700">90.6%</td><td><span class="pill" style="background:#e2f5ec;color:#065f46;font-size:9px">Excellent</span></td></tr>
-          <tr><td style="font-weight:600">🇫🇷 France</td><td>84</td><td style="color:#1D9E75;font-weight:700">89.3%</td><td><span class="pill" style="background:#e2f5ec;color:#065f46;font-size:9px">Excellent</span></td></tr>
-          <tr><td style="font-weight:600">🇨🇦 Canada</td><td>128</td><td style="color:#1D9E75;font-weight:700">89.1%</td><td><span class="pill" style="background:#e2f5ec;color:#065f46;font-size:9px">Excellent</span></td></tr>
-          <tr><td style="font-weight:600">🇬🇧 United Kingdom</td><td>36</td><td style="color:#1D9E75;font-weight:700">86.1%</td><td><span class="pill" style="background:#e2f5ec;color:#065f46;font-size:9px">Strong</span></td></tr>
-          <tr><td style="font-weight:600">🇺🇸 United States</td><td>176</td><td style="color:#1D9E75;font-weight:700">80.1%</td><td><span class="pill" style="background:#e2f5ec;color:#065f46;font-size:9px">Strong</span></td></tr>
-          <tr><td style="font-weight:600">🇦🇺 Australia</td><td>80</td><td style="color:#1D9E75;font-weight:700">82.5%</td><td><span class="pill" style="background:#e2f5ec;color:#065f46;font-size:9px">Strong</span></td></tr>
-          <tr><td style="font-weight:600">🇯🇵 Japan</td><td>48</td><td style="color:#BA7517;font-weight:700">77.1%</td><td><span class="pill" style="background:#fef3dc;color:#92400e;font-size:9px">Good</span></td></tr>
-          <tr><td style="font-weight:600">🇸🇬 Singapore</td><td>199</td><td style="color:#BA7517;font-weight:700">71.4%</td><td><span class="pill" style="background:#fef3dc;color:#92400e;font-size:9px">Good</span></td></tr>
-          <tr><td style="font-weight:600">🇹🇭 Thailand</td><td>589</td><td style="color:#BA7517;font-weight:700">71.8%</td><td><span class="pill" style="background:#fef3dc;color:#92400e;font-size:9px">Good</span></td></tr>
-          <tr><td style="font-weight:600">🇨🇳 China</td><td>14</td><td style="color:#D85A30;font-weight:700">50.0%</td><td><span class="pill" style="background:#fee8e8;color:#b91c1c;font-size:9px">Low</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <div class="card-title" style="color:#e37400">Audience interests <span style="font-weight:400;color:var(--t3)">· top segments by sessions</span></div>
-      <div style="display:flex;flex-direction:column;gap:7px">
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="flex:1;color:var(--t2)">Travel / Travel Buffs</span><div style="width:80px;height:5px;background:#e8e8e8;border-radius:2px;overflow:hidden"><div style="width:100%;height:100%;background:#e37400;border-radius:2px"></div></div><span style="font-weight:700;min-width:24px;text-align:right">51</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="flex:1;color:var(--t2)">News &amp; Politics / Avid Readers</span><div style="width:80px;height:5px;background:#e8e8e8;border-radius:2px;overflow:hidden"><div style="width:82%;height:100%;background:#4285f4;border-radius:2px"></div></div><span style="font-weight:700;min-width:24px;text-align:right">42</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="flex:1;color:var(--t2)">Banking &amp; Finance / Avid Investors</span><div style="width:80px;height:5px;background:#e8e8e8;border-radius:2px;overflow:hidden"><div style="width:76%;height:100%;background:#4285f4;border-radius:2px"></div></div><span style="font-weight:700;min-width:24px;text-align:right">39</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="flex:1;color:var(--t2)">Technology / Technophiles</span><div style="width:80px;height:5px;background:#e8e8e8;border-radius:2px;overflow:hidden"><div style="width:72%;height:100%;background:#6f42c1;border-radius:2px"></div></div><span style="font-weight:700;min-width:24px;text-align:right">37</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="flex:1;color:var(--t2)">Lifestyles / Shutterbugs</span><div style="width:80px;height:5px;background:#e8e8e8;border-radius:2px;overflow:hidden"><div style="width:68%;height:100%;background:#6f42c1;border-radius:2px"></div></div><span style="font-weight:700;min-width:24px;text-align:right">35</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="flex:1;color:var(--t2)">Media &amp; Entertainment / Movie Lovers</span><div style="width:80px;height:5px;background:#e8e8e8;border-radius:2px;overflow:hidden"><div style="width:55%;height:100%;background:#BA7517;border-radius:2px"></div></div><span style="font-weight:700;min-width:24px;text-align:right">28</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="flex:1;color:var(--t2)">Shoppers / Shopping Enthusiasts</span><div style="width:80px;height:5px;background:#e8e8e8;border-radius:2px;overflow:hidden"><div style="width:55%;height:100%;background:#BA7517;border-radius:2px"></div></div><span style="font-weight:700;min-width:24px;text-align:right">28</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="flex:1;color:var(--t2)">Food &amp; Dining / Cooking Enthusiasts</span><div style="width:80px;height:5px;background:#e8e8e8;border-radius:2px;overflow:hidden"><div style="width:37%;height:100%;background:#34a853;border-radius:2px"></div></div><span style="font-weight:700;min-width:24px;text-align:right">19</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="flex:1;color:var(--t2)">Travel / Beachbound Travelers</span><div style="width:80px;height:5px;background:#e8e8e8;border-radius:2px;overflow:hidden"><div style="width:33%;height:100%;background:#e37400;border-radius:2px"></div></div><span style="font-weight:700;min-width:24px;text-align:right">17</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="flex:1;color:var(--t2)">Lifestyles / Business Professionals</span><div style="width:80px;height:5px;background:#e8e8e8;border-radius:2px;overflow:hidden"><div style="width:27%;height:100%;background:#34a853;border-radius:2px"></div></div><span style="font-weight:700;min-width:24px;text-align:right">14</span></div>
-      </div>
-      <div style="margin-top:10px;padding:9px 12px;background:#e2f5ec;border-radius:6px;font-size:11px;color:#065f46;line-height:1.5;border-left:2px solid #1D9E75">
-        <strong>Audience insight:</strong> Travel Buffs dominant (51 sessions). Strong Finance &amp; Tech segment (76 combined) — ideal for MICE targeting. Food &amp; Dining (36) aligns with Wiggle Room / dining content.
-      </div>
-    </div>
-  </div>
-
-  <!-- Charts row -->
-  <div class="card">
-    <div class="card-title">Weekly charts</div>
     <div class="two-col">
       <div>
-        <div style="font-size:11px;color:var(--t3);margin-bottom:8px">Sessions by region (top 8 markets)</div>
-        <div style="display:flex;flex-direction:column;gap:6px;padding-top:4px">
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:100px;flex-shrink:0">🇹🇭 Thailand</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px"><div style="width:100%;height:100%;background:#e37400;border-radius:3px"></div></div><span style="min-width:32px;text-align:right;font-weight:700">589</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:100px;flex-shrink:0">🇸🇬 Singapore</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px"><div style="width:33.8%;height:100%;background:#4285f4;border-radius:3px"></div></div><span style="min-width:32px;text-align:right;font-weight:700">199</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:100px;flex-shrink:0">🇺🇸 US</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px"><div style="width:29.9%;height:100%;background:#34a853;border-radius:3px"></div></div><span style="min-width:32px;text-align:right;font-weight:700">176</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:100px;flex-shrink:0">🇨🇦 Canada</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px"><div style="width:21.7%;height:100%;background:#4285f4;border-radius:3px"></div></div><span style="min-width:32px;text-align:right;font-weight:700">128</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:100px;flex-shrink:0">🇫🇷 France</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px"><div style="width:14.3%;height:100%;background:#4285f4;border-radius:3px"></div></div><span style="min-width:32px;text-align:right;font-weight:700">84</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:100px;flex-shrink:0">🇦🇺 Australia</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px"><div style="width:13.6%;height:100%;background:#4285f4;border-radius:3px"></div></div><span style="min-width:32px;text-align:right;font-weight:700">80</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:100px;flex-shrink:0">🇯🇵 Japan</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px"><div style="width:8.1%;height:100%;background:#6f42c1;border-radius:3px"></div></div><span style="min-width:32px;text-align:right;font-weight:700">48</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:100px;flex-shrink:0">🇬🇧 UK</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px"><div style="width:6.1%;height:100%;background:#6f42c1;border-radius:3px"></div></div><span style="min-width:32px;text-align:right;font-weight:700">36</span></div>
-    </div>
-      </div>
-      <div>
-        <div style="font-size:11px;color:var(--t3);margin-bottom:8px">Booking funnel drop-off</div>
-        <div style="display:flex;flex-direction:column;gap:6px;padding-top:4px">
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:120px;flex-shrink:0">Homepage</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px"><div style="width:100%;height:100%;background:#e37400;border-radius:3px"></div></div><span style="min-width:36px;text-align:right;font-weight:700">1,237</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:120px;flex-shrink:0">Booking / Stay</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px"><div style="width:40%;height:100%;background:#34a853;border-radius:3px"></div></div><span style="min-width:36px;text-align:right;font-weight:700">495</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:120px;flex-shrink:0">Select Room</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px"><div style="width:16.7%;height:100%;background:#4285f4;border-radius:3px"></div></div><span style="min-width:36px;text-align:right;font-weight:700">206</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:120px;flex-shrink:0">Booking / Search</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px"><div style="width:9.9%;height:100%;background:#4285f4;border-radius:3px"></div></div><span style="min-width:36px;text-align:right;font-weight:700">123</span></div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="width:120px;flex-shrink:0">Checkout</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px"><div style="width:1.2%;height:100%;background:#D85A30;border-radius:3px"></div></div><span style="min-width:36px;text-align:right;font-weight:700;color:#D85A30">15</span></div>
-      <div style="margin-top:4px;font-size:10px;color:#D85A30;font-weight:700">⚠ 83.8% drop-off between Select Room → Checkout</div>
-    </div>
-      </div>
-    </div>
-  </div>
+        <div class="stat-hero">8</div>
+        <div style="font-size:13px;color:var(--mid);margin-top:6px;">/100 — Early stage, room to grow</div>
+        <div style="width:48px;height:2px;background:var(--gold);margin:1.25rem 0;"></div>
+        <div style="font-size:12px;color:#444;line-height:1.75;">
+          We opened recently, so AI systems haven't learned much about us yet.
+          A score of 8/100 is expected for a new property — but competitors are scoring 60–70.
+          We need to grow this number quickly.
+        </div>
 
-  <!-- Insights -->
-  <div class="card">
-    <div style="background:#1a1200;border-radius:8px;padding:16px 18px">
-      <div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#f9ab00;text-transform:uppercase;margin-bottom:12px">GA4 Insights &amp; Recommendations</div>
-      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:11px;color:#ccc;line-height:1.6">
-        <div style="width:5px;height:5px;border-radius:50%;background:#34a853;flex-shrink:0;margin-top:5px"></div>
-        <span><strong style="color:#fff">US market generating all revenue ($2,987).</strong> Only 176 US sessions — highest value market. Consider Meta/Google campaigns targeting US luxury travellers specifically.</span>
-      </div>
-      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:11px;color:#ccc;line-height:1.6">
-        <div style="width:5px;height:5px;border-radius:50%;background:#f9ab00;flex-shrink:0;margin-top:5px"></div>
-        <span><strong style="color:#fff">Singapore is #2 source market (199 sessions) but 0 revenue.</strong> Aligns with Google Ads PMAX SG — conversion tracking missing is masking actual bookings.</span>
-      </div>
-      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:11px;color:#ccc;line-height:1.6">
-        <div style="width:5px;height:5px;border-radius:50%;background:#D85A30;flex-shrink:0;margin-top:5px"></div>
-        <span><strong style="color:#fff">Booking funnel has 83.8% drop-off at checkout.</strong> 206 users reach Select Room, only 15 reach Complete Details. Review room selection UX and rate display.</span>
-      </div>
-      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:11px;color:#ccc;line-height:1.6">
-        <div style="width:5px;height:5px;border-radius:50%;background:#4285f4;flex-shrink:0;margin-top:5px"></div>
-        <span><strong style="color:#fff">Meetings page has 137 views</strong> — strong MICE intent from web traffic. Aligns well with Google Ads MICE campaigns. Add lead form or enquiry CTA to this page.</span>
-      </div>
-      <div style="display:flex;gap:10px;align-items:flex-start;font-size:11px;color:#ccc;line-height:1.6">
-        <div style="width:5px;height:5px;border-radius:50%;background:#6f42c1;flex-shrink:0;margin-top:5px"></div>
-        <span><strong style="color:#fff">China engagement at only 50%</strong> — lowest of all markets. Check if Baidu/WeChat presence is needed, or if content language/relevance needs improvement for CN visitors.</span>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- ═══ TAB: ACTION PLAN ═══ -->
-
-<div class="panel" id="tab-actions">
-  <div class="card">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-      <div class="card-title" style="margin-bottom:0">Action plan — Mon 31 Mar → Sun 6 Apr 2026</div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <div class="prog-bar-bg" style="width:140px"><div class="prog-bar-fill" id="prog-fill" style="width:0%"></div></div>
-        <span style="font-size:12px;font-weight:700" id="prog-label">0 / 12 complete</span>
-      </div>
-    </div>
-    <div class="action-row done" onclick="toggleTask(this)"><div class="chk on"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="a-title">Claim &amp; optimise Google Business Profile</div><div class="a-meta"><span class="tag p1">P1</span><span class="tag">Marketing</span><span class="tag">Done 29 Mar</span><span class="tag" style="background:#e2f5ec;color:#065f46">✓ Completed</span></div></div></div>
-    <div class="action-row done" onclick="toggleTask(this)"><div class="chk on"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="a-title">Update title tags: Rooms, Dining, Offers pages</div><div class="a-meta"><span class="tag p1">P1</span><span class="tag">Marketing</span><span class="tag">Done 29 Mar</span><span class="tag" style="background:#e2f5ec;color:#065f46">✓ Completed</span></div></div></div>
-    <div class="action-row" onclick="toggleTask(this)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="a-title">Fix AU campaign CPC — switch to PMAX or reduce bids 50%</div><div class="a-meta"><span class="tag p1">P1</span><span class="tag">Marketing</span><span class="tag">Mon 31 Mar</span><span class="tag">1h</span><span class="tag" style="background:#0a0a0a;color:#fff">New</span><span class="tag" style="background:#e2f5ec;color:#065f46">High impact</span></div></div></div>
-    <div class="action-row" onclick="toggleTask(this)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="a-title">Implement Hotel JSON-LD schema on homepage</div><div class="a-meta"><span class="tag p1">P1</span><span class="tag">Dev</span><span class="tag">Tue 1 Apr</span><span class="tag">3h</span><span class="tag" style="background:#fef3dc;color:#92400e">Carry</span><span class="tag" style="background:#e2f5ec;color:#065f46">High impact</span></div></div></div>
-    <div class="action-row" onclick="toggleTask(this)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="a-title">Write &amp; publish homepage meta description</div><div class="a-meta"><span class="tag p1">P1</span><span class="tag">Marketing</span><span class="tag">Mon 31 Mar</span><span class="tag">30m</span><span class="tag" style="background:#fef3dc;color:#92400e">Carry</span><span class="tag" style="background:#e2f5ec;color:#065f46">High impact</span></div></div></div>
-    <div class="action-row" onclick="toggleTask(this)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="a-title">Set up Google Ads conversion tracking (Tools → Conversions)</div><div class="a-meta"><span class="tag p1">P1</span><span class="tag">Dev</span><span class="tag">Wed 2 Apr</span><span class="tag">2h</span><span class="tag" style="background:#0a0a0a;color:#fff">New</span><span class="tag" style="background:#e2f5ec;color:#065f46">High impact</span></div></div></div>
-    <div class="action-row" onclick="toggleTask(this)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="a-title">Audit robots.txt &amp; sitemap via Search Console</div><div class="a-meta"><span class="tag p2">P2</span><span class="tag">Dev</span><span class="tag">Wed 2 Apr</span><span class="tag">1h</span><span class="tag" style="background:#fef3dc;color:#92400e">Carry</span><span class="tag" style="background:#fef3dc;color:#92400e">Med impact</span></div></div></div>
-    <div class="action-row" onclick="toggleTask(this)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="a-title">Run weekly LLM prompt checks &amp; update tracker</div><div class="a-meta"><span class="tag p2">P2</span><span class="tag">Marketing</span><span class="tag">Mon 31 Mar</span><span class="tag">45m</span><span class="tag" style="background:#0a0a0a;color:#fff">New</span><span class="tag" style="background:#fef3dc;color:#92400e">Med impact</span></div></div></div>
-    <div class="action-row" onclick="toggleTask(this)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="a-title">Optimise spa page for Bangkok luxury spa hotel</div><div class="a-meta"><span class="tag p2">P2</span><span class="tag">Content</span><span class="tag">Thu 3 Apr</span><span class="tag">3h</span><span class="tag" style="background:#fef3dc;color:#92400e">Carry</span><span class="tag" style="background:#fef3dc;color:#92400e">Med impact</span></div></div></div>
-    <div class="action-row" onclick="toggleTask(this)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="a-title">Create rooftop bar page / expand Dining for rooftop bar Bangkok keyword</div><div class="a-meta"><span class="tag p2">P2</span><span class="tag">Content</span><span class="tag">Fri 4 Apr</span><span class="tag">3h</span><span class="tag" style="background:#0a0a0a;color:#fff">New</span><span class="tag" style="background:#fef3dc;color:#92400e">Med impact</span></div></div></div>
-    <div class="action-row" onclick="toggleTask(this)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="a-title">Add alt text to homepage hero images</div><div class="a-meta"><span class="tag p2">P2</span><span class="tag">Marketing</span><span class="tag">Tue 1 Apr</span><span class="tag">1h</span><span class="tag" style="background:#fef3dc;color:#92400e">Carry</span><span class="tag" style="background:#fef3dc;color:#92400e">Med impact</span></div></div></div>
-    <div class="action-row" onclick="toggleTask(this)"><div class="chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="a-title">Benchmark PageSpeed Insights score (mobile)</div><div class="a-meta"><span class="tag">P3</span><span class="tag">Dev</span><span class="tag">Wed 2 Apr</span><span class="tag">1h</span><span class="tag" style="background:#fef3dc;color:#92400e">Carry</span><span class="tag" style="background:#fef3dc;color:#92400e">Med impact</span></div></div></div>
-  </div>
-</div>
-
-<!-- ═══ TAB: AI PROMPT LIBRARY ═══ -->
-
-<div class="panel" id="tab-prompts">
-  <div class="card">
-    <div class="card-title">How to use this library</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
-      <div style="background:var(--s2);border-radius:8px;padding:14px 16px"><div style="font-size:11px;font-weight:700;margin-bottom:6px">Every Monday</div><div style="font-size:12px;color:var(--t2);line-height:1.6">Copy 2–3 prompts. Paste into ChatGPT, Perplexity, Google. Check if Fairmont appears. Record in LLM tracker tab.</div></div>
-      <div style="background:var(--s2);border-radius:8px;padding:14px 16px"><div style="font-size:11px;font-weight:700;margin-bottom:6px">What to look for</div><div style="font-size:12px;color:var(--t2);line-height:1.6">Is Fairmont in top 3? Is it recommended? Is the OTA (Expedia/TripAdvisor) being cited?</div></div>
-      <div style="background:var(--s2);border-radius:8px;padding:14px 16px"><div style="font-size:11px;font-weight:700;margin-bottom:6px">Scoring guide</div><div style="font-size:12px;color:var(--t2);line-height:1.6"><span style="color:#1D9E75;font-weight:700">Top 3</span> = Strong · <span style="color:#BA7517;font-weight:700">Mentioned</span> = Partial · <span style="color:#D85A30;font-weight:700">Not mentioned</span> = Gap</div></div>
-    </div>
-  </div>
-  <div class="card"><div class="card-title">Discovery prompts <span style="font-weight:400;color:var(--t3)">— general hotel search</span></div><div id="prompts-discovery" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:8px"></div></div>
-  <div class="card"><div class="card-title">Comparison prompts <span style="font-weight:400;color:var(--t3)">— vs competitors</span></div><div id="prompts-comparison" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:8px"></div></div>
-  <div class="card"><div class="card-title">Feature prompts <span style="font-weight:400;color:var(--t3)">— spa, rooftop, pets, family</span></div><div id="prompts-feature" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:8px"></div></div>
-  <div class="card"><div class="card-title">Local prompts <span style="font-weight:400;color:var(--t3)">— BTS, neighbourhood</span></div><div id="prompts-local" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:8px"></div></div>
-  <div class="card"><div class="card-title">Brand verification <span style="font-weight:400;color:var(--t3)">— check AI accuracy</span></div><div id="prompts-brand" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:8px"></div></div>
-</div>
-
-
-<div class="panel" id="tab-google">
-
-  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:12px">
-      
-      <div>
-        <div style="font-size:16px;font-weight:700">Google Ads</div>
-        <div style="font-size:11px;color:var(--t3)">Account: 8859088396 &nbsp;·&nbsp; THB &nbsp;·&nbsp; <span style="color:#34a853;font-weight:600">Live via Supermetrics</span></div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="position:relative" id="ga-datepicker-wrap">
-        <button onclick="toggleDatePicker()" id="ga-range-btn" style="font-size:12px;font-weight:600;padding:7px 14px;border-radius:6px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px;min-width:200px;justify-content:space-between">
-          <span id="ga-range-label">Last 30 days</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </button>
-        <div id="ga-datepicker" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--surface);border:0.5px solid var(--border);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.12);z-index:200;width:480px">
-          <div style="display:flex">
-            <div style="width:150px;border-right:0.5px solid var(--border);padding:8px 0;flex-shrink:0">
-              <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);padding:8px 14px 6px">Presets</div>
-              <button onclick="applyPreset('last_7_days','Last 7 days')" class="dpre-btn" id="pre-last_7_days">Last 7 days</button>
-              <button onclick="applyPreset('last_14_days','Last 14 days')" class="dpre-btn" id="pre-last_14_days">Last 14 days</button>
-              <button onclick="applyPreset('last_30_days','Last 30 days')" class="dpre-btn dpre-active" id="pre-last_30_days">Last 30 days</button>
-              <button onclick="applyPreset('last_90_days','Last 90 days')" class="dpre-btn" id="pre-last_90_days">Last 90 days</button>
-              <button onclick="applyPreset('this_month','This month')" class="dpre-btn" id="pre-this_month">This month</button>
-              <button onclick="applyPreset('last_month','Last month')" class="dpre-btn" id="pre-last_month">Last month</button>
-              <button onclick="applyPreset('last_3_months','Last 3 months')" class="dpre-btn" id="pre-last_3_months">Last 3 months</button>
-              <button onclick="applyPreset('last_12_months','Last 12 months')" class="dpre-btn" id="pre-last_12_months">Last 12 months</button>
-            </div>
-            <div style="flex:1;padding:14px">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-                <button onclick="dpNav(-1)" style="width:26px;height:26px;border-radius:50%;border:0.5px solid var(--border);background:none;cursor:pointer;font-size:13px;color:var(--text);display:flex;align-items:center;justify-content:center">&#8249;</button>
-                <span style="font-size:13px;font-weight:700" id="dp-month-lbl">Mar 2026</span>
-                <button onclick="dpNav(1)" style="width:26px;height:26px;border-radius:50%;border:0.5px solid var(--border);background:none;cursor:pointer;font-size:13px;color:var(--text);display:flex;align-items:center;justify-content:center">&#8250;</button>
-              </div>
-              <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px;margin-bottom:4px">
-                <div style="font-size:10px;font-weight:600;text-align:center;color:var(--t3);padding:3px">S</div>
-                <div style="font-size:10px;font-weight:600;text-align:center;color:var(--t3);padding:3px">M</div>
-                <div style="font-size:10px;font-weight:600;text-align:center;color:var(--t3);padding:3px">T</div>
-                <div style="font-size:10px;font-weight:600;text-align:center;color:var(--t3);padding:3px">W</div>
-                <div style="font-size:10px;font-weight:600;text-align:center;color:var(--t3);padding:3px">T</div>
-                <div style="font-size:10px;font-weight:600;text-align:center;color:var(--t3);padding:3px">F</div>
-                <div style="font-size:10px;font-weight:600;text-align:center;color:var(--t3);padding:3px">S</div>
-              </div>
-              <div id="dp-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px"></div>
-              <div style="display:flex;gap:6px;margin-top:10px;font-size:11px;color:var(--t3)">
-                <span>From: <strong id="dp-from" style="color:var(--text)">—</strong></span>
-                <span style="margin-left:8px">To: <strong id="dp-to" style="color:var(--text)">—</strong></span>
-              </div>
-              <div style="display:flex;gap:6px;margin-top:8px;justify-content:flex-end">
-                <button onclick="dpClose()" style="font-size:11px;padding:5px 12px;border-radius:6px;border:0.5px solid var(--border2);background:none;color:var(--text);cursor:pointer;font-family:inherit">Cancel</button>
-                <button onclick="dpApply()" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#34a853;color:#fff;cursor:pointer;font-family:inherit">Apply</button>
-              </div>
-            </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:1.5rem;">
+          <div style="background:var(--white);padding:1rem;text-align:center;">
+            <div style="font-size:22px;font-weight:400;">~14</div>
+            <div style="font-size:10px;font-weight:600;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Times mentioned</div>
+            <div style="font-size:10px;color:var(--green);margin-top:3px;">+2 this week</div>
+          </div>
+          <div style="background:var(--white);padding:1rem;text-align:center;">
+            <div style="font-size:22px;font-weight:400;">5</div>
+            <div style="font-size:10px;font-weight:600;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Sources cited</div>
+            <div style="font-size:10px;color:var(--green);margin-top:3px;">+1 this week</div>
+          </div>
+          <div style="background:var(--white);padding:1rem;text-align:center;">
+            <div style="font-size:22px;font-weight:400;">3</div>
+            <div style="font-size:10px;font-weight:600;color:var(--mid);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Pages found</div>
+            <div style="font-size:10px;color:var(--green);margin-top:3px;">+1 this week</div>
           </div>
         </div>
+
+        <div class="sub-label" style="margin-top:1.5rem;">Which AI mentions us most</div>
+        <div class="comp-row"><div class="comp-label"><span>ChatGPT</span><span style="color:var(--gold);">45%</span></div><div class="comp-track"><div class="comp-fill us" style="width:45%;"></div></div></div>
+        <div class="comp-row"><div class="comp-label"><span>Perplexity</span><span>22%</span></div><div class="comp-track"><div class="comp-fill" style="width:22%;"></div></div></div>
+        <div class="comp-row"><div class="comp-label"><span>Google AI</span><span>18%</span></div><div class="comp-track"><div class="comp-fill" style="width:18%;"></div></div></div>
+        <div class="comp-row"><div class="comp-label"><span>Claude</span><span>15%</span></div><div class="comp-track"><div class="comp-fill" style="width:15%;"></div></div></div>
+      </div>
+
+      <div>
+        <div class="sub-label">How we compare to competitors</div>
+        <div style="font-size:11px;color:var(--mid);margin-bottom:1rem;">Score out of 100 — higher means AI recommends them more often when guests ask</div>
+        <div class="comp-row"><div class="comp-label"><span>Marriott Marquis BKK</span><span>71</span></div><div class="comp-track"><div class="comp-fill" style="width:71%;"></div></div></div>
+        <div class="comp-row"><div class="comp-label"><span>Park Hyatt Bangkok</span><span>62</span></div><div class="comp-track"><div class="comp-fill" style="width:62%;"></div></div></div>
+        <div class="comp-row"><div class="comp-label"><span>JW Marriott BKK</span><span>58</span></div><div class="comp-track"><div class="comp-fill" style="width:58%;"></div></div></div>
+        <div class="comp-row"><div class="comp-label"><span>Kempinski Bangkok</span><span>34</span></div><div class="comp-track"><div class="comp-fill" style="width:34%;"></div></div></div>
+        <div class="comp-row"><div class="comp-label us"><span>Fairmont Bangkok ← us</span><span>8</span></div><div class="comp-track"><div class="comp-fill us" style="width:8%;"></div></div></div>
+
+        <hr />
       </div>
     </div>
   </div>
 
-  <div class="kpi-grid">
-    <div class="kpi" style="border-top:2px solid #4285f4"><div class="kpi-label">Total spend</div><div class="kpi-value">฿12,071</div><div class="kpi-sub">All campaigns · THB</div><div class="kpi-delta neu">Last 30 days</div></div>
-    <div class="kpi" style="border-top:2px solid #4285f4"><div class="kpi-label">Impressions</div><div class="kpi-value">11,642</div><div class="kpi-sub">All campaigns</div><div class="kpi-delta neu">Last 30 days</div></div>
-    <div class="kpi" style="border-top:2px solid #4285f4"><div class="kpi-label">Clicks</div><div class="kpi-value">364</div><div class="kpi-sub">All campaigns</div><div class="kpi-delta neu">Last 30 days</div></div>
-    <div class="kpi" style="border-top:2px solid #34a853"><div class="kpi-label">CTR</div><div class="kpi-value">3.13%</div><div class="kpi-sub">Avg across campaigns</div><div class="kpi-delta up">Above 3% benchmark</div></div>
-    <div class="kpi" style="border-top:2px solid #4285f4"><div class="kpi-label">Avg CPC</div><div class="kpi-value">฿33.16</div><div class="kpi-sub">Across all campaigns</div><div class="kpi-delta neu">THB</div></div>
-    <div class="kpi" style="border-top:2px solid #ea4335"><div class="kpi-label">Conversions</div><div class="kpi-value">0</div><div class="kpi-sub">No conversion tracking</div><div class="kpi-delta down">Setup required</div></div>
-    <div class="kpi" style="border-top:2px solid #ea4335"><div class="kpi-label">ROAS</div><div class="kpi-value">N/A</div><div class="kpi-sub">No conversion value</div><div class="kpi-delta down">Cannot calculate</div></div>
-    <div class="kpi" style="border-top:2px solid #fbbc04"><div class="kpi-label">Active campaigns</div><div class="kpi-value">3</div><div class="kpi-sub">PMAX + SEM · MICE</div><div class="kpi-delta neu">SG + AU markets</div></div>
-  </div>
+  <!-- ══════════════ SECTION 3 — GOOGLE ADS ══════════════ -->
+  <div class="section">
+    <div class="section-eyebrow">Section 03</div>
+    <div class="section-title">Paid Google ads — are they working?</div>
+    <div class="section-explain">
+      We are paying Google to show our ads to event planners and corporate bookers in Singapore and Australia.
+      Here's how much we're spending, how many people are seeing and clicking the ads, and what needs fixing.
+    </div>
 
-  <div class="card">
-    <div class="card-title" style="color:#34a853">Campaign performance <span style="font-weight:400;color:var(--t3)">· last 30 days · live data</span></div>
-    <div style="overflow-x:auto">
-    <table class="tbl">
-      <thead><tr><th>Campaign</th><th>Type</th><th>Market</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>Spend (THB)</th><th>CPC (THB)</th><th>Conv.</th><th>ROAS</th></tr></thead>
+    <div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">
+      <div class="kpi-cell" style="border-top:2px solid var(--gold);">
+        <div class="kpi-val gold">฿12,071</div>
+        <div class="kpi-name">Total spent this month</div>
+        <div class="kpi-explain">Across 3 ad campaigns targeting event planners</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-val">11,642</div>
+        <div class="kpi-name">People who saw our ads</div>
+        <div class="kpi-explain">How many times our ad appeared on someone's screen</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-val">364</div>
+        <div class="kpi-name">People who clicked</div>
+        <div class="kpi-explain">Out of 11,642 who saw the ad, 364 clicked through to our site</div>
+      </div>
+      <div class="kpi-cell" style="border-top:2px solid var(--green);">
+        <div class="kpi-val good">3.13%</div>
+        <div class="kpi-name">Click rate</div>
+        <div class="kpi-explain">3 in every 100 people clicked — above the industry average of 3% ✓</div>
+      </div>
+    </div>
+
+    <div class="sub-label">Two Things That Need Fixing Now</div>
+    <div class="status-grid" style="grid-template-columns:1fr 1fr;margin-bottom:2rem;">
+      <div class="status-card bad">
+        <div class="status-icon">!</div>
+        <div>
+          <div class="status-label">Budget Problem</div>
+          <div class="status-title">Australia is eating 76% of our budget</div>
+          <div class="status-body">
+            We spend <strong>฿9,141</strong> on Australia and get only <strong>37 clicks</strong> — each click costs ฿247.
+            Singapore gives us 321 clicks for just ฿2,032 — each click costs only ฿6.
+            <br><br>
+            Australia is <strong>40× more expensive</strong> per visitor than Singapore, for a much smaller audience.
+          </div>
+          <div class="status-action">→ Reduce Australia budget or change strategy immediately</div>
+        </div>
+      </div>
+      <div class="status-card bad">
+        <div class="status-icon">!</div>
+        <div>
+          <div class="status-label">Measurement Gap</div>
+          <div class="status-title">We can't tell if ads are generating bookings</div>
+          <div class="status-body">
+            We know people click our ads — but we have no way to track whether those clicks turn into enquiries or bookings.
+            Without this, we're spending money without knowing if it's working.
+          </div>
+          <div class="status-action">→ Set up booking tracking (developer + marketing task)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-label">Ad Campaigns — Side by Side</div>
+    <table class="tbl" style="margin-bottom:1.5rem;">
+      <thead>
+        <tr><th>Campaign</th><th>Target market</th><th>People reached</th><th>Clicks</th><th>Cost per click</th><th>Budget used</th></tr>
+      </thead>
       <tbody>
-        <tr><td style="font-weight:600;font-size:11px">AWO-MICE Generic SG</td><td><span class="pill" style="background:#e6f7f3;color:#065f46;font-size:9px">PMAX</span></td><td>Singapore</td><td>10,711</td><td>321</td><td style="color:#34a853;font-weight:600">3.00%</td><td>฿2,032</td><td style="color:#34a853;font-weight:600">฿6.33</td><td style="color:var(--t3)">0</td><td style="color:var(--t3)">N/A</td></tr>
-        <tr><td style="font-weight:600;font-size:11px">AWO-MICE Generic AU</td><td><span class="pill" style="background:#e8f0fe;color:#1a56db;font-size:9px">SEM</span></td><td>Australia</td><td>743</td><td>37</td><td style="color:#34a853;font-weight:600">4.98%</td><td style="color:#D85A30;font-weight:600">฿9,141</td><td style="color:#D85A30;font-weight:600">฿247.05</td><td style="color:var(--t3)">0</td><td style="color:var(--t3)">N/A</td></tr>
-        <tr><td style="font-weight:600;font-size:11px">AWO-MICE Generic SG</td><td><span class="pill" style="background:#e8f0fe;color:#1a56db;font-size:9px">SEM</span></td><td>Singapore</td><td>188</td><td>6</td><td>3.19%</td><td>฿898</td><td style="color:#BA7517;font-weight:600">฿149.73</td><td style="color:var(--t3)">0</td><td style="color:var(--t3)">N/A</td></tr>
-        <tr style="background:var(--s2);font-weight:700"><td colspan="3">Total</td><td>11,642</td><td>364</td><td>3.13%</td><td>฿12,071</td><td>฿33.16</td><td>0</td><td>N/A</td></tr>
+        <tr><td>Events &amp; Conferences — Singapore</td><td>Singapore</td><td>10,711</td><td>321</td><td style="color:var(--green);font-weight:600;">฿6.33 ✓</td><td>฿2,032 (17%)</td></tr>
+        <tr><td>Events &amp; Conferences — Australia</td><td>Australia</td><td>743</td><td>37</td><td style="color:var(--red);font-weight:600;">฿247.05 ✗</td><td>฿9,141 (76%)</td></tr>
+        <tr><td>Events &amp; Conferences — Singapore (text)</td><td>Singapore</td><td>188</td><td>6</td><td style="color:var(--amber);font-weight:600;">฿149.73</td><td>฿898 (7%)</td></tr>
       </tbody>
     </table>
+
+  </div>
+
+  <!-- ══════════════ SECTION 4 — META ADS ══════════════ -->
+  <div class="section">
+    <div class="section-eyebrow">Section 04</div>
+    <div class="section-title">Instagram &amp; Facebook ads — not started yet</div>
+    <div class="section-explain">
+      Instagram and Facebook are where luxury travellers discover hotels through beautiful imagery — before they even search Google.
+      Our account is connected and ready, but we haven't run a single ad yet.
+    </div>
+
+    <div style="border:1px solid var(--border);padding:2.5rem;text-align:center;max-width:340px;">
+      <div class="sub-label" style="text-align:center;">Current Instagram / Facebook spend</div>
+      <div style="font-size:56px;font-weight:300;color:var(--red);line-height:1;">฿0</div>
+      <div style="font-size:11px;color:var(--mid);margin-top:0.75rem;">Last 90 days · Account is live and connected</div>
+      <div style="font-size:11px;color:var(--green);margin-top:4px;">Ready to launch whenever we choose</div>
     </div>
   </div>
 
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title" style="color:#34a853">By device <span style="font-weight:400;color:var(--t3)">· live data</span></div>
-      <table class="tbl">
-        <thead><tr><th>Device</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>Spend</th><th>CPC</th></tr></thead>
-        <tbody>
-          <tr><td style="font-weight:600">Mobile</td><td>8,007</td><td>298</td><td style="color:#34a853;font-weight:600">3.72%</td><td>฿6,170</td><td>฿20.70</td></tr>
-          <tr><td style="font-weight:600">Tablet</td><td>1,860</td><td>22</td><td style="color:#BA7517">1.18%</td><td>฿103</td><td>฿4.70</td></tr>
-          <tr><td style="font-weight:600">Desktop</td><td>1,775</td><td>44</td><td>2.48%</td><td>฿5,798</td><td style="color:#D85A30;font-weight:600">฿131.76</td></tr>
-        </tbody>
-      </table>
-      <div style="margin-top:12px;display:flex;flex-direction:column;gap:7px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:2px">Impression share</div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:56px;flex-shrink:0;color:var(--t2)">Mobile</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="height:100%;width:69%;background:#4285f4;border-radius:3px"></div></div><span style="color:var(--t2);min-width:36px;text-align:right;font-weight:600">68.8%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:56px;flex-shrink:0;color:var(--t2)">Tablet</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="height:100%;width:16%;background:#34a853;border-radius:3px"></div></div><span style="color:var(--t2);min-width:36px;text-align:right;font-weight:600">16.0%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:56px;flex-shrink:0;color:var(--t2)">Desktop</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="height:100%;width:15%;background:#ea4335;border-radius:3px"></div></div><span style="color:var(--t2);min-width:36px;text-align:right;font-weight:600">15.2%</span></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title" style="color:#34a853">By country <span style="font-weight:400;color:var(--t3)">· live data</span></div>
-      <table class="tbl">
-        <thead><tr><th>Country</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>Spend</th></tr></thead>
-        <tbody>
-          <tr><td style="font-weight:600">Singapore</td><td>10,899</td><td>327</td><td>3.00%</td><td style="color:#34a853;font-weight:600">฿2,930</td></tr>
-          <tr><td style="font-weight:600">Australia</td><td>743</td><td>37</td><td style="color:#34a853;font-weight:600">4.98%</td><td style="color:#D85A30;font-weight:600">฿9,141</td></tr>
-        </tbody>
-      </table>
-      <div style="margin-top:12px;display:flex;flex-direction:column;gap:7px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:2px">Spend share</div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:72px;flex-shrink:0;color:var(--t2)">Australia</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="height:100%;width:76%;background:#D85A30;border-radius:3px"></div></div><span style="color:#D85A30;font-weight:700;min-width:36px;text-align:right">75.7%</span></div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:72px;flex-shrink:0;color:var(--t2)">Singapore</span><div style="flex:1;height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden"><div style="height:100%;width:24%;background:#4285f4;border-radius:3px"></div></div><span style="color:var(--t2);font-weight:600;min-width:36px;text-align:right">24.3%</span></div>
-      </div>
-      <div style="margin-top:10px;padding:9px 12px;background:#fef3dc;border-radius:6px;font-size:11px;color:#92400e;line-height:1.5;border-left:2px solid #fbbc04">
-        Australia uses <strong>76% of budget</strong> for only 6% of impressions. CPC ฿247 vs Singapore ฿9. Review AU bid strategy urgently.
-      </div>
-    </div>
-  </div>
 
-  <div class="card">
-    <div class="card-title" style="color:#34a853">Top search terms <span style="font-weight:400;color:var(--t3)">· SEM campaigns · live data</span></div>
-    <div style="overflow-x:auto">
-    <table class="tbl">
-      <thead><tr><th>Search term</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>Cost (THB)</th><th>CPC (THB)</th></tr></thead>
-      <tbody>
-        <tr><td style="font-weight:600">convention center</td><td>15</td><td>2</td><td style="color:#34a853;font-weight:600">13.33%</td><td>฿315</td><td>฿157.74</td></tr>
-        <tr><td style="font-weight:600">event spaces</td><td>6</td><td>1</td><td style="color:#34a853;font-weight:600">16.67%</td><td>฿144</td><td>฿143.60</td></tr>
-        <tr><td style="font-weight:600">accor events</td><td>11</td><td>1</td><td>9.09%</td><td>฿320</td><td>฿320.33</td></tr>
-        <tr><td style="font-weight:600">conference</td><td>21</td><td>1</td><td>4.76%</td><td>฿124</td><td>฿123.75</td></tr>
-        <tr><td style="font-weight:600">convention centre</td><td>18</td><td>0</td><td style="color:var(--t3)">0%</td><td>฿0</td><td style="color:var(--t3)">—</td></tr>
-        <tr><td style="font-weight:600">venues</td><td>13</td><td>0</td><td style="color:var(--t3)">0%</td><td>฿0</td><td style="color:var(--t3)">—</td></tr>
-        <tr><td style="font-weight:600">venue hire</td><td>9</td><td>0</td><td style="color:var(--t3)">0%</td><td>฿0</td><td style="color:var(--t3)">—</td></tr>
-        <tr><td style="font-weight:600">conference room</td><td>7</td><td>0</td><td style="color:var(--t3)">0%</td><td>฿0</td><td style="color:var(--t3)">—</td></tr>
-        <tr><td style="font-weight:600">meeting room hire</td><td>6</td><td>0</td><td style="color:var(--t3)">0%</td><td>฿0</td><td style="color:var(--t3)">—</td></tr>
-        <tr><td style="font-weight:600">event management company</td><td>6</td><td>0</td><td style="color:var(--t3)">0%</td><td>฿0</td><td style="color:var(--t3)">—</td></tr>
-      </tbody>
-    </table>
-    </div>
-  </div>
-
-  <div class="card">
-    <div style="background:#0a2e0a;border-radius:8px;padding:16px 18px">
-      <div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#34a853;text-transform:uppercase;margin-bottom:12px">Google Ads insights — live data</div>
-      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:11px;color:#ccc;line-height:1.6">
-        <div style="width:5px;height:5px;border-radius:50%;background:#34a853;flex-shrink:0;margin-top:5px"></div>
-        <span><strong style="color:#fff">All 3 campaigns are MICE/Events focused</strong> — targeting Meetings, Incentives, Conferences &amp; Exhibitions in Singapore and Australia. No hotel, spa, or dining campaigns are active.</span>
-      </div>
-      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:11px;color:#ccc;line-height:1.6">
-        <div style="width:5px;height:5px;border-radius:50%;background:#D85A30;flex-shrink:0;margin-top:5px"></div>
-        <span><strong style="color:#fff">Australia CPC problem:</strong> AU SEM uses ฿9,141 (76% of budget) for only 37 clicks — CPC ฿247 vs PMAX Singapore ฿6. Consider switching AU to PMAX or reducing AU bids.</span>
-      </div>
-      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:11px;color:#ccc;line-height:1.6">
-        <div style="width:5px;height:5px;border-radius:50%;background:#ea4335;flex-shrink:0;margin-top:5px"></div>
-        <span><strong style="color:#fff">Conversion tracking not configured:</strong> 0 conversions and 0 ROAS. Set up Google Ads conversion actions (Tools → Conversions) to track form submissions, calls, and enquiries.</span>
-      </div>
-      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:11px;color:#ccc;line-height:1.6">
-        <div style="width:5px;height:5px;border-radius:50%;background:#4285f4;flex-shrink:0;margin-top:5px"></div>
-        <span><strong style="color:#fff">Mobile dominates at 68.8%</strong> of impressions. Ensure landing pages are mobile-optimised — PageSpeed mobile ~52/100 needs improvement before increasing spend.</span>
-      </div>
-      <div style="display:flex;gap:10px;align-items:flex-start;font-size:11px;color:#ccc;line-height:1.6">
-        <div style="width:5px;height:5px;border-radius:50%;background:#fbbc04;flex-shrink:0;margin-top:5px"></div>
-        <span><strong style="color:#fff">Opportunity:</strong> No hotel booking campaigns running. Launch campaigns for "luxury hotel Bangkok Sukhumvit" (1,900/mo) and "rooftop bar Bangkok" (2,400/mo) alongside MICE.</span>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<div class="panel" id="tab-meta">
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
-    
-    <div>
-      <div style="font-size:16px;font-weight:700">Meta Ads</div>
-      <div style="font-size:11px;color:var(--t3)">Account: act_1961680314410145 &nbsp;&middot;&nbsp; Facebook + Instagram &nbsp;&middot;&nbsp; <span style="color:#1877f2;font-weight:600">Live via Supermetrics</span></div>
-    </div>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi" style="border-top:2px solid #1877f2"><div class="kpi-label">Total spend</div><div class="kpi-value" style="color:var(--t3)">฿0</div><div class="kpi-sub">No active campaigns</div><div class="kpi-delta neu">Last 90 days</div></div>
-    <div class="kpi" style="border-top:2px solid #1877f2"><div class="kpi-label">Reach</div><div class="kpi-value" style="color:var(--t3)">—</div><div class="kpi-sub">No data</div><div class="kpi-delta neu">—</div></div>
-    <div class="kpi" style="border-top:2px solid #1877f2"><div class="kpi-label">Impressions</div><div class="kpi-value" style="color:var(--t3)">—</div><div class="kpi-sub">No data</div><div class="kpi-delta neu">—</div></div>
-    <div class="kpi" style="border-top:2px solid #1877f2"><div class="kpi-label">Clicks</div><div class="kpi-value" style="color:var(--t3)">—</div><div class="kpi-sub">No data</div><div class="kpi-delta neu">—</div></div>
-    <div class="kpi" style="border-top:2px solid #1877f2"><div class="kpi-label">CTR</div><div class="kpi-value" style="color:var(--t3)">—</div><div class="kpi-sub">No data</div><div class="kpi-delta neu">—</div></div>
-    <div class="kpi" style="border-top:2px solid #1877f2"><div class="kpi-label">CPM</div><div class="kpi-value" style="color:var(--t3)">—</div><div class="kpi-sub">No data</div><div class="kpi-delta neu">—</div></div>
-    <div class="kpi" style="border-top:2px solid #1877f2"><div class="kpi-label">Conversions</div><div class="kpi-value" style="color:var(--t3)">—</div><div class="kpi-sub">No data</div><div class="kpi-delta neu">—</div></div>
-    <div class="kpi" style="border-top:2px solid #1877f2"><div class="kpi-label">ROAS</div><div class="kpi-value" style="color:var(--t3)">—</div><div class="kpi-sub">No data</div><div class="kpi-delta neu">—</div></div>
-  </div>
-  <div class="card">
-    <div style="text-align:center;padding:32px 20px">
-      <div style="width:48px;height:48px;border-radius:50%;background:#e8f4ff;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#1877f2" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke="#1877f2" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </div>
-      <div style="font-size:15px;font-weight:700;margin-bottom:8px">No active Meta campaigns found</div>
-      <div style="font-size:12px;color:var(--t3);line-height:1.8;max-width:480px;margin:0 auto">Account act_1961680314410145 is connected and verified via Supermetrics. No campaign data returned for the last 90 days.<br><br>Once campaigns are launched, all metrics will appear here automatically.</div>
-    </div>
-  </div>
-  <div class="card">
-    <div style="background:#0a1929;border-radius:8px;padding:16px 18px">
-      <div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#1877f2;text-transform:uppercase;margin-bottom:12px">Recommended campaigns to launch first</div>
-      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:11px;color:#ccc;line-height:1.6"><div style="width:5px;height:5px;border-radius:50%;background:#1877f2;flex-shrink:0;margin-top:5px"></div><span><strong style="color:#fff">Retargeting — Website visitors:</strong> Target fairmont.com/bangkok-sukhumvit visitors. Highest ROAS potential for a new property.</span></div>
-      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:11px;color:#ccc;line-height:1.6"><div style="width:5px;height:5px;border-radius:50%;background:#1877f2;flex-shrink:0;margin-top:5px"></div><span><strong style="color:#fff">Awareness — Luxury travellers TH/SG/HK:</strong> Instagram Feed and Reels with rooftop and spa visuals to build brand recognition in core source markets.</span></div>
-      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:11px;color:#ccc;line-height:1.6"><div style="width:5px;height:5px;border-radius:50%;background:#1877f2;flex-shrink:0;margin-top:5px"></div><span><strong style="color:#fff">Lookalike — Past guests:</strong> Build from Fairmont Gold member email list or CRM data for high-intent prospecting.</span></div>
-      <div style="display:flex;gap:10px;align-items:flex-start;font-size:11px;color:#ccc;line-height:1.6"><div style="width:5px;height:5px;border-radius:50%;background:#1877f2;flex-shrink:0;margin-top:5px"></div><span><strong style="color:#fff">Conversion — Direct booking:</strong> Target warm audiences with a direct booking offer. Enable Meta Pixel conversion tracking on fairmont.com first.</span></div>
-    </div>
-  </div>
-</div>
-<div class="footer">FAIRMONT BANGKOK SUKHUMVIT &nbsp;·&nbsp; SEO + MEDIA DASHBOARD &nbsp;·&nbsp; CONFIDENTIAL &nbsp;·&nbsp; DATA: SUPERMETRICS + SEARCH CONSOLE + MANUAL SERP</div>
-</div>
-
-<script>
-/* ── TABS ── */
-function showTab(id,btn){
-  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
-  document.getElementById('tab-'+id).classList.add('on');
-  btn.classList.add('on');
-  try{localStorage.setItem('fbk_tab', btn.textContent.trim());}catch(e){}
-}
-
-/* ── TIME ── */
-function setTime(){
-  var n=new Date();
-  document.getElementById('upd-time').textContent=n.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+' '+n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-  document.getElementById('wk-date').textContent=n.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-}
-
-/* ── TASKS ── */
-function toggleTask(el){
-  el.querySelector('.chk').classList.toggle('on');
-  el.classList.toggle('done');
-  var all=document.querySelectorAll('.action-row').length;
-  var done=document.querySelectorAll('.action-row.done').length;
-  var pct=Math.round(done/all*100);
-  document.getElementById('prog-fill').style.width=pct+'%';
-  document.getElementById('prog-label').textContent=done+' / '+all+' complete';
-  document.getElementById('kpi-pct').textContent=pct+'%';
-  document.getElementById('kpi-count').textContent=done+' of '+all;
-  saveState();
-}
-
-/* ── COPY ── */
-function copyItem(el,text){
-  navigator.clipboard.writeText(text).catch(function(){});
-  var lbl=el.querySelector('.copy-lbl');
-  if(lbl){lbl.textContent='copied!';setTimeout(function(){lbl.textContent='copy';},1500);}
-}
-
-/* ── GAUGE ── */
-setTimeout(function(){
-  var arc=document.getElementById('gauge-arc');
-  arc.style.transition='stroke-dashoffset 1.2s ease';
-  arc.setAttribute('stroke-dashoffset',226-(8/100)*226);
-},400);
-
-/* ── LLM TRACKER ── */
-var TRK_PROMPTS=[
-  {q:'"Best luxury hotels Bangkok Sukhumvit"',p:'ChatGPT',pc:'gpt'},
-  {q:'"Best luxury hotels Bangkok Sukhumvit"',p:'Perplexity',pc:'ppx'},
-  {q:'"Best new hotel Bangkok 2026"',p:'ChatGPT',pc:'gpt'},
-  {q:'"Best new hotel Bangkok 2026"',p:'Perplexity',pc:'ppx'},
-  {q:'"Best hotel rooftop bar Bangkok"',p:'ChatGPT',pc:'gpt'},
-  {q:'"Best hotel rooftop bar Bangkok"',p:'Perplexity',pc:'ppx'},
-  {q:'"Pet friendly 5-star hotel Bangkok"',p:'ChatGPT',pc:'gpt'},
-  {q:'"Best spa hotel Bangkok for couples"',p:'ChatGPT',pc:'gpt'},
-  {q:'"Best spa hotel Bangkok for couples"',p:'Google AI',pc:'gai'},
-  {q:'"5-star hotel near BTS Asok Bangkok"',p:'ChatGPT',pc:'gpt'},
-  {q:'"Luxury hotel Bangkok Sukhumvit 2026"',p:'Perplexity',pc:'ppx'},
-  {q:'"Best hotel with spa Bangkok Sukhumvit"',p:'Google AI',pc:'gai'},
-  {q:'"Best family hotel Bangkok Sukhumvit"',p:'ChatGPT',pc:'gpt'},
-  {q:'"Best family hotel Bangkok Sukhumvit"',p:'Perplexity',pc:'ppx'},
-  {q:'"Family friendly hotel Bangkok with kids club"',p:'ChatGPT',pc:'gpt'},
-  {q:'"Family friendly hotel Bangkok with kids club"',p:'Google AI',pc:'gai'},
-  {q:'"Best hotel Bangkok for kids activities"',p:'ChatGPT',pc:'gpt'},
-  {q:'"Luxury family hotel Bangkok near BTS"',p:'Perplexity',pc:'ppx'}
-];
-var TRK_PC={
-  gpt:'background:#e6f7f3;color:#065f46',
-  ppx:'background:#f0ebff;color:#4c1d95',
-  gai:'background:#e8f0fe;color:#1a56db'
-};
-var TRK_STATE={};
-var TRK_WEEK=1;
-
-function trkKey(w,i){return 'w'+w+'r'+i;}
-
-function trkRender(){
-  var el=document.getElementById('trk-rows');
-  if(!el)return;
-  var html='';
-  for(var i=0;i<TRK_PROMPTS.length;i++){
-    var pr=TRK_PROMPTS[i];
-    var v=TRK_STATE[trkKey(TRK_WEEK,i)]||'';
-    var sOn=v==='strong';var pOn=v==='partial';var gOn=v==='gap';
-    var sStyle=sOn?'background:#1D9E75;color:#fff;border-color:#1D9E75':'background:var(--s2);color:var(--t2);border-color:var(--border2)';
-    var pStyle=pOn?'background:#D85A30;color:#fff;border-color:#D85A30':'background:var(--s2);color:var(--t2);border-color:var(--border2)';
-    var gStyle=gOn?'background:#555;color:#fff;border-color:#555':'background:var(--s2);color:var(--t2);border-color:var(--border2)';
-    html+='<div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:0.5px solid var(--border);flex-wrap:wrap">';
-    html+='<div style="font-size:13px;font-weight:600;flex:1;min-width:160px;color:var(--text)">'+pr.q+'</div>';
-    html+='<span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;'+TRK_PC[pr.pc]+'">'+pr.p+'</span>';
-    html+='<div style="display:flex;gap:6px">';
-    html+='<button data-i="'+i+'" data-v="strong" onclick="trkSet(this)" style="font-size:12px;font-weight:700;padding:5px 16px;border-radius:6px;border:0.5px solid;'+sStyle+';cursor:pointer;font-family:inherit">Strong</button>';
-    html+='<button data-i="'+i+'" data-v="partial" onclick="trkSet(this)" style="font-size:12px;font-weight:700;padding:5px 16px;border-radius:6px;border:0.5px solid;'+pStyle+';cursor:pointer;font-family:inherit">Partial</button>';
-    html+='<button data-i="'+i+'" data-v="gap" onclick="trkSet(this)" style="font-size:12px;font-weight:700;padding:5px 16px;border-radius:6px;border:0.5px solid;'+gStyle+';cursor:pointer;font-family:inherit">Gap</button>';
-    html+='</div></div>';
-  }
-  el.innerHTML=html;
-  trkCalc();
-}
-
-function trkSet(btn){
-  var i=parseInt(btn.getAttribute('data-i'));
-  var v=btn.getAttribute('data-v');
-  var ki=trkKey(TRK_WEEK,i);
-  TRK_STATE[ki]=(TRK_STATE[ki]===v)?'':v;
-  trkRender();
-  saveState();
-}
-
-function trkWeek(w){
-  TRK_WEEK=w;
-  var tabs=document.querySelectorAll('#trk-week-tabs button');
-  for(var t=0;t<tabs.length;t++){
-    var active=parseInt(tabs[t].getAttribute('data-w'))===w;
-    tabs[t].style.background=active?'#0a0a0a':'var(--surface)';
-    tabs[t].style.color=active?'#fff':'var(--text)';
-    tabs[t].style.borderColor=active?'#0a0a0a':'var(--border2)';
-  }
-  trkRender();
-  saveState();
-}
-
-function trkCalc(){
-  var s=0,p=0,g=0,tot=0;
-  for(var i=0;i<TRK_PROMPTS.length;i++){
-    var v=TRK_STATE[trkKey(TRK_WEEK,i)];
-    if(v){tot++;if(v==='strong')s++;else if(v==='partial')p++;else g++;}
-  }
-  var scoreEl=document.getElementById('trk-score');
-  var sEl=document.getElementById('trk-strong');
-  var pEl=document.getElementById('trk-partial');
-  var gEl=document.getElementById('trk-gap');
-  var score=8;
-  if(tot>0){var raw=Math.round(((s+(p*0.5))/tot)*100);score=Math.min(Math.round(8+(raw*0.92)),100);}
-  if(scoreEl)scoreEl.textContent=score;
-  if(sEl)sEl.textContent=s;
-  if(pEl)pEl.textContent=p;
-  if(gEl)gEl.textContent=g;
-}
-
-function trkExport(){
-  var lines=['Fairmont Bangkok LLM Tracker',''];
-  for(var i=0;i<TRK_PROMPTS.length;i++){
-    var v=TRK_STATE[trkKey(TRK_WEEK,i)]||'Not tested';
-    lines.push(TRK_PROMPTS[i].p+' | '+TRK_PROMPTS[i].q+' | '+v);
-  }
-  lines.push('');lines.push('Score: '+document.getElementById('trk-score').textContent+'/100');
-  navigator.clipboard.writeText(lines.join('\n')).catch(function(){});
-  var b=document.querySelector('[onclick="trkExport()"]');
-  if(b){b.textContent='Copied!';setTimeout(function(){b.textContent='Export results';},1500);}
-}
-
-/* ── TOPICS ── */
-var performing=[
-  {topic:'Fairmont Bangkok Sukhumvit',vis:85,mentions:12,trend:[2,4,6,8,10,12],vol:238,status:'high'},
-  {topic:'Fairmont Bangkok luxury hotel',vis:78,mentions:10,trend:[1,3,5,7,9,10],vol:154,status:'high'},
-  {topic:'Fairmont Gold Bangkok',vis:72,mentions:9,trend:[1,2,4,6,8,9],vol:90,status:'high'},
-  {topic:'Thailand first Fairmont hotel',vis:65,mentions:8,trend:[0,1,3,5,7,8],vol:45,status:'high'},
-  {topic:'Fairmont Bangkok Sukhumvit spa',vis:40,mentions:4,trend:[0,0,1,2,3,4],vol:106,status:'med'},
-  {topic:'Fairmont Bangkok rooftop bar',vis:32,mentions:3,trend:[0,0,0,1,2,3],vol:274,status:'med'},
-  {topic:'Fairmont Bangkok pet friendly',vis:28,mentions:2,trend:[0,0,0,0,1,2],vol:88,status:'med'},
-  {topic:'Luxury hotel Sukhumvit 20',vis:18,mentions:1,trend:[0,0,0,0,0,1],vol:190,status:'low'},
-  {topic:'Hotel near BTS Phrom Phong',vis:10,mentions:1,trend:[0,0,0,0,0,1],vol:381,status:'low'},
-  {topic:'Bangkok luxury spa hotel',vis:8,mentions:1,trend:[0,0,0,0,0,1],vol:106,status:'low'},
-  {topic:'5 star hotel Bangkok Sukhumvit',vis:5,mentions:0,trend:[0,0,0,0,0,0],vol:660,status:'low'},
-  {topic:'Family hotel Bangkok kids club',vis:4,mentions:0,trend:[0,0,0,0,0,0],vol:244,status:'low'}
-];
-var opportunities=[
-  {topic:'Best rooftop bar Bangkok Sukhumvit',vis:0,mentions:0,trend:[0,0,0,0,0,0],vol:877,status:'new'},
-  {topic:'Luxury hotel near EmSphere Bangkok',vis:0,mentions:0,trend:[0,0,0,0,0,0],vol:312,status:'new'},
-  {topic:'Pet friendly 5-star hotel Bangkok',vis:0,mentions:0,trend:[0,0,0,0,0,0],vol:720,status:'new'},
-  {topic:'Best family hotel Bangkok Sukhumvit',vis:0,mentions:0,trend:[0,0,0,0,0,0],vol:244,status:'new'},
-  {topic:'Hotel with hammam Bangkok',vis:0,mentions:0,trend:[0,0,0,0,0,0],vol:88,status:'new'},
-  {topic:'Couples spa retreat Bangkok hotel',vis:0,mentions:0,trend:[0,0,0,0,0,0],vol:156,status:'new'},
-  {topic:'Accor luxury hotel Bangkok',vis:0,mentions:0,trend:[0,0,0,0,0,0],vol:98,status:'new'},
-  {topic:'Best new hotel Bangkok 2026',vis:0,mentions:0,trend:[0,0,0,0,0,0],vol:420,status:'new'}
-];
-var sLabel={high:'Strong',med:'Growing',low:'Weak',new:'Opportunity'};
-var sCls={high:'sb-high',med:'sb-med',low:'sb-low',new:'sb-new'};
-
-function renderTopics(data){
-  document.getElementById('topics-body').innerHTML=data.map(function(r){
-    var mx=Math.max.apply(null,r.trend.concat([1]));
-    var bars=r.trend.map(function(v,i){return '<div class="mini-bar'+(i===5?' hi':'')+'" style="height:'+Math.max(2,(v/mx)*22)+'px"></div>';}).join('');
-    return '<tr><td style="font-weight:600;max-width:280px">'+r.topic+'</td><td><div style="display:flex;align-items:center;gap:8px"><div class="vis-bar-bg"><div class="vis-bar-fill" style="width:'+r.vis+'%"></div></div><span style="font-size:11px;font-weight:700;min-width:24px">'+r.vis+'</span></div></td><td style="font-weight:600">'+r.mentions+'</td><td><div class="mini-trend">'+bars+'</div></td><td>'+r.vol.toLocaleString()+'</td><td><span class="status-badge '+sCls[r.status]+'">'+sLabel[r.status]+'</span></td></tr>';
-  }).join('');
-}
-
-function switchTopics(type,btn){
-  document.querySelectorAll('.topics-tabs .t-tab').forEach(function(t){t.classList.remove('on');});
-  btn.classList.add('on');
-  renderTopics(type==='performing'?performing:opportunities);
-}
-
-/* ── PROMPTS ── */
-var PROMPTS={
-  discovery:[
-    {text:'What are the best luxury hotels in Bangkok Sukhumvit?',platforms:['ChatGPT','Perplexity','Google AI'],priority:'high',note:'Highest volume — test weekly'},
-    {text:'Best 5-star hotel in Bangkok near BTS?',platforms:['ChatGPT','Perplexity'],priority:'high',note:'Local + luxury intent'},
-    {text:'Where should I stay in Bangkok for a luxury trip in 2026?',platforms:['ChatGPT','Google AI'],priority:'high',note:'2026 recency signal'},
-    {text:'Best new hotel opening Bangkok 2026',platforms:['ChatGPT','Perplexity'],priority:'high',note:'Fairmont opened 2026 — strong opportunity'},
-    {text:'Most luxurious hotels in Bangkok city centre',platforms:['Perplexity','Google AI'],priority:'med',note:'Generic discovery'},
-    {text:'What is the nicest hotel in Sukhumvit Bangkok?',platforms:['ChatGPT','Google AI'],priority:'med',note:'Conversational query'},
-    {text:'Top rated luxury hotels Bangkok with pool and spa',platforms:['Perplexity'],priority:'med',note:'Feature + luxury combo'},
-    {text:'Visiting Bangkok 5 nights — what luxury hotel near shopping?',platforms:['ChatGPT','Google AI'],priority:'med',note:'Near EmSphere — Fairmont advantage'}
-  ],
-  comparison:[
-    {text:'Fairmont Bangkok vs Park Hyatt Bangkok — which is better?',platforms:['ChatGPT','Perplexity'],priority:'high',note:'Direct competitor comparison'},
-    {text:'Compare Fairmont Bangkok Sukhumvit and Marriott Marquis',platforms:['ChatGPT'],priority:'high',note:'Most common competitor'},
-    {text:'Is Fairmont Bangkok worth it vs other 5-star hotels?',platforms:['ChatGPT','Google AI'],priority:'high',note:'Value perception check'},
-    {text:'Best luxury hotel Bangkok — Fairmont, Hyatt, or Marriott?',platforms:['Perplexity','Google AI'],priority:'med',note:'Three-way comparison'},
-    {text:'Which Accor luxury hotel in Bangkok is the best?',platforms:['ChatGPT','Perplexity'],priority:'med',note:'Within-group comparison'},
-    {text:'New luxury hotels Bangkok 2025 2026 — best opening?',platforms:['Perplexity'],priority:'watch',note:'Track as more openings appear'}
-  ],
-  feature:[
-    {text:'Best hotel with rooftop bar in Bangkok Sukhumvit',platforms:['ChatGPT','Perplexity','Google AI'],priority:'high',note:'2,400/mo search volume'},
-    {text:'Best luxury spa hotel in Bangkok for couples',platforms:['ChatGPT','Google AI'],priority:'high',note:'Fairmont Spa is a key differentiator'},
-    {text:'Pet friendly 5-star hotel Bangkok Sukhumvit',platforms:['ChatGPT','Perplexity'],priority:'high',note:'Fairmont accepts cats & dogs — unique USP'},
-    {text:'Best family hotel Bangkok with kids club',platforms:['ChatGPT','Google AI'],priority:'high',note:'Kids & Cats Club — strong family offer'},
-    {text:'Luxury hotel Bangkok with hammam and sauna',platforms:['Perplexity'],priority:'med',note:'Specific spa features — low competition'},
-    {text:'Best hotel Bangkok for business trip with meeting rooms',platforms:['ChatGPT','Google AI'],priority:'med',note:'Ballroom + co-working'},
-    {text:'Bangkok hotel with Fairmont Gold lounge',platforms:['ChatGPT','Perplexity'],priority:'med',note:'Unique brand feature'},
-    {text:'Hotels in Bangkok with French restaurant and rooftop',platforms:['Google AI'],priority:'watch',note:'Bang Ko Brasserie + Rooftop combo'}
-  ],
-  local:[
-    {text:'Best hotel to stay near BTS Asok Bangkok',platforms:['ChatGPT','Perplexity','Google AI'],priority:'high',note:'Fairmont is walking distance'},
-    {text:'Where to stay near EmSphere and EmQuartier Bangkok?',platforms:['ChatGPT','Google AI'],priority:'high',note:'Fairmont is steps away'},
-    {text:'Best hotel in Sukhumvit Soi 20 Bangkok',platforms:['Perplexity','Google AI'],priority:'high',note:'Exact address-level query'},
-    {text:'Luxury hotel near Benjakitti Park Bangkok',platforms:['ChatGPT'],priority:'med',note:'1km from hotel'},
-    {text:'Best place to stay Sukhumvit for shopping and nightlife',platforms:['ChatGPT','Google AI'],priority:'med',note:'Thonglor / Ekkamai crowd'},
-    {text:'Hotel recommendations Sukhumvit between Asok and Phrom Phong',platforms:['Perplexity'],priority:'med',note:'Exact corridor Fairmont is in'}
-  ],
-  brand:[
-    {text:'Tell me about Fairmont Bangkok Sukhumvit hotel',platforms:['ChatGPT','Perplexity','Google AI'],priority:'high',note:'Brand fact-check — verify accuracy'},
-    {text:'When did Fairmont Bangkok Sukhumvit open?',platforms:['ChatGPT','Perplexity'],priority:'high',note:'Verify AI knows 2026 opening'},
-    {text:'What amenities does Fairmont Bangkok Sukhumvit have?',platforms:['ChatGPT','Google AI'],priority:'high',note:'Check completeness'},
-    {text:'Is Fairmont Bangkok Sukhumvit pet friendly?',platforms:['ChatGPT','Perplexity'],priority:'med',note:'Specific policy verification'},
-    {text:'How far is Fairmont Bangkok Sukhumvit from BTS?',platforms:['Google AI'],priority:'med',note:'Location accuracy check'},
-    {text:'What restaurants are at Fairmont Bangkok Sukhumvit?',platforms:['ChatGPT','Perplexity'],priority:'med',note:'Verify Bang Ko Brasserie, Rooftop, Wiggle Room'}
-  ]
-};
-var pClass={ChatGPT:'tag-chatgpt',Perplexity:'tag-perplexity','Google AI':'tag-google'};
-var pLinks={ChatGPT:'https://chatgpt.com',Perplexity:'https://perplexity.ai','Google AI':'https://gemini.google.com'};
-var priClass={high:'priority-high',med:'priority-med',watch:'priority-watch'};
-var priLabel={high:'High priority',med:'Monitor',watch:'Watch'};
-
-function renderPrompts(cat,cid){
-  var el=document.getElementById(cid);
-  if(!el)return;
-  el.innerHTML=PROMPTS[cat].map(function(p){
-    var tags=p.platforms.map(function(pl){return '<span class="prompt-tag '+pClass[pl]+'">'+pl+'</span>';}).join('');
-    var links=p.platforms.map(function(pl){return '<a href="'+pLinks[pl]+'" target="_blank" style="font-size:11px;padding:3px 9px;border-radius:20px;border:0.5px solid var(--border2);background:var(--s2);color:var(--t2);text-decoration:none;font-weight:600">'+pl+' ↗</a>';}).join('');
-    return '<div class="prompt-card"><div style="font-size:13px;font-weight:600;color:var(--text);line-height:1.5">"'+p.text+'"</div><div style="font-size:10px;color:var(--t3)">'+p.note+'</div><div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center">'+tags+'<span class="'+priClass[p.priority]+'">'+priLabel[p.priority]+'</span></div><div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center"><button class="prompt-copy-btn" onclick="copyPromptBtn(this,\''+p.text.replace(/'/g,"\\'")+'\')" >Copy prompt</button>'+links+'</div></div>';
-  }).join('');
-}
-
-function copyPromptBtn(btn,text){
-  navigator.clipboard.writeText(text).catch(function(){});
-  btn.textContent='Copied!';setTimeout(function(){btn.textContent='Copy prompt';},1500);
-}
-
-
-
-</script>
+</div><!-- /report -->
 </body>
 </html>
